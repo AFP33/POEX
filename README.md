@@ -32,18 +32,20 @@
 | CLR Runtime Header (Data Directory)   | Not Yet (in progress)          |   |
 | Reserved (Data Directory)   | Not Yet (in progress)          |   |
 
+
 - ### How to Build the Library?
+
 
 1. Clone the repository
 
- > git clone https://github.com/hasherezade/libpeconv.git
+  *git clone [https://github.com/AFP33/POEX.git](https://github.com/AFP33/POEX.git)*
 
 2. Open Visual Studio and just Build it
 
   - *you need at least C++14*
   - *minimum SDK is 10.0*
-  <br>
-3. Use the output `POEX.lib` in your project
+  
+ 3. Use the output `POEX.lib` in your project
 
 
 - ### Examples
