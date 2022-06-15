@@ -38,12 +38,12 @@
 
 1. Clone the repository
 
-  *git clone [https://github.com/AFP33/POEX.git](https://github.com/AFP33/POEX.git)*
+   - *git clone [https://github.com/AFP33/POEX.git](https://github.com/AFP33/POEX.git)*
 
 2. Open Visual Studio and just Build it
 
-  - *you need at least C++14*
-  - *minimum SDK is 10.0*
+   - *you need at least C++14*
+   - *minimum SDK is 10.0*
   
  3. Use the output `POEX.lib` in your project
 
@@ -117,4 +117,4 @@ int main()
 ```
 
 * You can access other part of PE Structures as you see in here DOS Header example.
-* More detail see Wiki.
+* More detail see [Wiki](https://github.com/AFP33/POEX/wiki).
