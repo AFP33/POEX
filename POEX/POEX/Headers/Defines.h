@@ -383,6 +383,7 @@ enum class SubsystemType : unsigned short
 /// </summary>
 enum class DllCharacteristicsType : unsigned short
 {
+    HighEntropyVA = 0x20,
     /// <summary>
     ///     DLL can be relocated at load time.
     /// </summary>
@@ -411,12 +412,22 @@ enum class DllCharacteristicsType : unsigned short
     /// <summary>
     ///     Do not bind the image.
     /// </summary>
-    NoBind,
+    NoBind = 0x800,
+
+    /// <summary>
+    /// Image must execute in an AppContainer.
+    /// </summary>
+    AppContainer = 0x1000,
 
     /// <summary>
     ///     Image is a WDM driver.
     /// </summary>
     WdmDriver = 0x2000,
+
+    /// <summary>
+    /// Image supports Control Flow Guard.
+    /// </summary>
+    GuardCF = 0x4000,
 
     /// <summary>
     ///     Terminal server aware.
@@ -566,11 +577,6 @@ enum class SectionFlag : unsigned int
     /// Section content can be accessed relative to GP.
     /// </summary>
     Gprel = 0x00008000,
-
-    /// <summary>
-    /// Unknown.
-    /// </summary>
-    MemFardata = 0x00008000,
 
     /// <summary>
     /// Unknown.

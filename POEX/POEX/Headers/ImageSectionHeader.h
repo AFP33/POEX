@@ -20,6 +20,8 @@ namespace POEX
 		//ImageSectionHeader(ImageSectionHeader&&) = default;
 		~ImageSectionHeader() = default;
 
+		auto ToString(SectionFlag sectionFlag)->std::string;
+
 		/// <summary>
 		/// Get base address of the image from the Optional header.
 		/// </summary>

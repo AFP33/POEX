@@ -29,6 +29,36 @@ auto POEX::ImageOptionalHeader::ToString(SubsystemType subsystem) -> std::string
 	}
 }
 
+auto POEX::ImageOptionalHeader::ToString(DllCharacteristicsType dllCharacteristicsType) -> std::string
+{
+	switch (dllCharacteristicsType)
+	{
+		case DllCharacteristicsType::HighEntropyVA: return "Image can handle a high entropy 64-bit virtual address space.";
+		case DllCharacteristicsType::DynamicBase: return "DLL can be relocated at load time.";
+		case DllCharacteristicsType::ForceIntegrity: return "Code Integrity checks are enforced.";
+		case DllCharacteristicsType::NxCompat: return "Image is NX compatible.";
+		case DllCharacteristicsType::NoIsolation: return "Isolation aware, but do not isolate the image.";
+		case DllCharacteristicsType::NoSeh: return "Does not use structured exception (SE) handling. No SE handler may be called in this image.";
+		case DllCharacteristicsType::NoBind: return "Do not bind the image.";
+		case DllCharacteristicsType::AppContainer: return "Image must execute in an AppContainer.";
+		case DllCharacteristicsType::WdmDriver: return "A WDM driver.";
+		case DllCharacteristicsType::GuardCF: return "Image supports Control Flow Guard.";
+		case DllCharacteristicsType::TerminalServerAware: return "Terminal Server aware.";
+		default: return "NOT FOUND DllCharacteristicsType";
+	}
+}
+
+auto POEX::ImageOptionalHeader::ToString(FileType fileType) -> std::string
+{
+	switch (fileType)
+	{
+		case FileType::BIT32: return "File is 32bit.";
+		case FileType::BIT64: return "File is 64bit.";
+		case FileType::ROM: return "File is ROM.";
+		default: return "NOT FOUND FILE TYPE";
+	}
+}
+
 auto POEX::ImageOptionalHeader::DataDirectory() -> std::vector<std::unique_ptr<ImageDataDirectory>>
 {
 	std::vector<std::unique_ptr<ImageDataDirectory>> dDirectory;

@@ -26,6 +26,8 @@ namespace POEX
 		/// <param name="subsystem">The SubsystemType</param>
 		/// <returns>Subsystem as string</returns>
 		auto ToString(SubsystemType subsystem)->std::string;
+		auto ToString(DllCharacteristicsType dllCharacteristicsType)->std::string;
+		auto ToString(FileType fileType)->std::string;
 
 		/// <summary>
 		/// Get Data Directories
