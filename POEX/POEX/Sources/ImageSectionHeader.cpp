@@ -1,12 +1,12 @@
 #include "..\Headers\ImageSectionHeader.h"
 
-POEX::ImageSectionHeader::ImageSectionHeader(const std::shared_ptr<BufferFile>& bFile, 
+ImageSectionHeader::ImageSectionHeader(const std::shared_ptr<BufferFile>& bFile, 
 	const long& offset, 
 	const unsigned long& imageBaseAddress) : bFile(bFile), offset(offset), imageBaseAddress(imageBaseAddress)
 {
 }
 
-auto POEX::ImageSectionHeader::ToString(SectionFlag sectionFlag) -> std::string
+auto ImageSectionHeader::ToString(SectionFlag sectionFlag) -> std::string
 {
 	switch (sectionFlag)
 	{
@@ -50,18 +50,18 @@ auto POEX::ImageSectionHeader::ToString(SectionFlag sectionFlag) -> std::string
 	}
 }
 
-auto POEX::ImageSectionHeader::ImageBaseAddress() -> unsigned long
+auto ImageSectionHeader::ImageBaseAddress() -> unsigned long
 {
 	return this->imageBaseAddress;
 }
 
-auto POEX::ImageSectionHeader::Name() const -> std::string
+auto ImageSectionHeader::Name() const -> std::string
 {
 	auto nameArr = bFile->SubArray(this->offset, 8);
 	return std::string(nameArr.begin(), nameArr.end());
 }
 
-auto POEX::ImageSectionHeader::Name(const std::string& name) -> void
+auto ImageSectionHeader::Name(const std::string& name) -> void
 {
 	if (name.empty())
 		THROW_OUT_OF_RANGE("[ERROR] 'name' cannot be empty.");
@@ -69,97 +69,97 @@ auto POEX::ImageSectionHeader::Name(const std::string& name) -> void
 	this->bFile->WriteBytes(this->offset, nameArr);
 }
 
-auto POEX::ImageSectionHeader::VirtualSize() const -> unsigned int
+auto ImageSectionHeader::VirtualSize() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0008);
 }
 
-auto POEX::ImageSectionHeader::VirtualSize(const unsigned int& virtualSize) -> void
+auto ImageSectionHeader::VirtualSize(const unsigned int& virtualSize) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x0008, virtualSize);
 }
 
-auto POEX::ImageSectionHeader::VirtualAddress() const -> unsigned int
+auto ImageSectionHeader::VirtualAddress() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x000C);
 }
 
-auto POEX::ImageSectionHeader::VirtualAddress(const unsigned int& virtualAddress) -> void
+auto ImageSectionHeader::VirtualAddress(const unsigned int& virtualAddress) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x000C, virtualAddress);
 }
 
-auto POEX::ImageSectionHeader::SizeOfRawData() const -> unsigned int
+auto ImageSectionHeader::SizeOfRawData() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0010);
 }
 
-auto POEX::ImageSectionHeader::SizeOfRawData(const unsigned int& sizeOfRawData) -> void
+auto ImageSectionHeader::SizeOfRawData(const unsigned int& sizeOfRawData) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x0010, sizeOfRawData);
 }
 
-auto POEX::ImageSectionHeader::PointerToRawData() const -> unsigned int
+auto ImageSectionHeader::PointerToRawData() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0014);
 }
 
-auto POEX::ImageSectionHeader::PointerToRawData(const unsigned int& pointerToRawData) -> void
+auto ImageSectionHeader::PointerToRawData(const unsigned int& pointerToRawData) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x0014, pointerToRawData);
 }
 
-auto POEX::ImageSectionHeader::PointerToRelocations() const -> unsigned int
+auto ImageSectionHeader::PointerToRelocations() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0018);
 }
 
-auto POEX::ImageSectionHeader::PointerToRelocations(const unsigned int& pointerToRelocations) -> void
+auto ImageSectionHeader::PointerToRelocations(const unsigned int& pointerToRelocations) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x0018, pointerToRelocations);
 }
 
-auto POEX::ImageSectionHeader::PointerToLinenumbers() const -> unsigned int
+auto ImageSectionHeader::PointerToLinenumbers() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x001C);
 }
 
-auto POEX::ImageSectionHeader::PointerToLinenumbers(const unsigned int& pointerToLinenumbers) -> void
+auto ImageSectionHeader::PointerToLinenumbers(const unsigned int& pointerToLinenumbers) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x001C, pointerToLinenumbers);
 }
 
-auto POEX::ImageSectionHeader::NumberOfRelocations() const -> unsigned short
+auto ImageSectionHeader::NumberOfRelocations() const -> unsigned short
 {
 	return this->bFile->ReadUnsignedShort(this->offset + 0x0020);
 }
 
-auto POEX::ImageSectionHeader::NumberOfRelocations(const unsigned short& numberOfRelocations) -> void
+auto ImageSectionHeader::NumberOfRelocations(const unsigned short& numberOfRelocations) -> void
 {
 	this->bFile->WriteUnsignedShort(this->offset + 0x0020, numberOfRelocations);
 }
 
-auto POEX::ImageSectionHeader::NumberOfLinenumbers() const -> unsigned short
+auto ImageSectionHeader::NumberOfLinenumbers() const -> unsigned short
 {
 	return this->bFile->ReadUnsignedShort(this->offset + 0x0022);
 }
 
-auto POEX::ImageSectionHeader::NumberOfLinenumbers(const unsigned short& numberOfLinenumbers) -> void
+auto ImageSectionHeader::NumberOfLinenumbers(const unsigned short& numberOfLinenumbers) -> void
 {
 	this->bFile->WriteUnsignedShort(this->offset + 0x0022, numberOfLinenumbers);
 }
 
-auto POEX::ImageSectionHeader::Characteristics() const -> SectionFlag
+auto ImageSectionHeader::Characteristics() const -> SectionFlag
 {
 	return SectionFlag(this->bFile->ReadUnsignedInt(this->offset + 0x0024));
 }
 
-auto POEX::ImageSectionHeader::Characteristics(const SectionFlag& characteristics) -> void
+auto ImageSectionHeader::Characteristics(const SectionFlag& characteristics) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x0024, (unsigned int)characteristics);
 }
 
-auto POEX::ImageSectionHeader::ToArray() -> std::vector<byte>
+auto ImageSectionHeader::ToArray() -> std::vector<byte>
 {
 	auto header = std::vector<byte>();
 	header.reserve(SECTION_HEADER_SIZE); // Section header size is 40 bytes
@@ -189,7 +189,7 @@ auto POEX::ImageSectionHeader::ToArray() -> std::vector<byte>
 	return header;
 }
 
-auto POEX::ImageSectionHeader::FixedNameLength(const std::string& name) -> std::vector<byte>
+auto ImageSectionHeader::FixedNameLength(const std::string& name) -> std::vector<byte>
 {
 	auto nameArr = std::vector<byte>(name.begin(), name.end());
 	if (nameArr.size() > 8)

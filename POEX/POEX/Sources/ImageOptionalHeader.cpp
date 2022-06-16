@@ -1,6 +1,6 @@
 #include "../Headers/ImageOptionalHeader.h"
 
-POEX::ImageOptionalHeader::ImageOptionalHeader(const std::shared_ptr<BufferFile>& bFile, 
+ImageOptionalHeader::ImageOptionalHeader(const std::shared_ptr<BufferFile>& bFile, 
 	const long& offset, 
 	const bool& is64Bit) : bFile(bFile), offset(offset), is64Bit(is64Bit)
 {
@@ -8,7 +8,7 @@ POEX::ImageOptionalHeader::ImageOptionalHeader(const std::shared_ptr<BufferFile>
 		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
-auto POEX::ImageOptionalHeader::ToString(SubsystemType subsystem) -> std::string
+auto ImageOptionalHeader::ToString(SubsystemType subsystem) -> std::string
 {
 	switch (subsystem)
 	{
@@ -29,7 +29,7 @@ auto POEX::ImageOptionalHeader::ToString(SubsystemType subsystem) -> std::string
 	}
 }
 
-auto POEX::ImageOptionalHeader::ToString(DllCharacteristicsType dllCharacteristicsType) -> std::string
+auto ImageOptionalHeader::ToString(DllCharacteristicsType dllCharacteristicsType) -> std::string
 {
 	switch (dllCharacteristicsType)
 	{
@@ -48,7 +48,7 @@ auto POEX::ImageOptionalHeader::ToString(DllCharacteristicsType dllCharacteristi
 	}
 }
 
-auto POEX::ImageOptionalHeader::ToString(FileType fileType) -> std::string
+auto ImageOptionalHeader::ToString(FileType fileType) -> std::string
 {
 	switch (fileType)
 	{
@@ -59,7 +59,7 @@ auto POEX::ImageOptionalHeader::ToString(FileType fileType) -> std::string
 	}
 }
 
-auto POEX::ImageOptionalHeader::DataDirectory() -> std::vector<std::unique_ptr<ImageDataDirectory>>
+auto ImageOptionalHeader::DataDirectory() -> std::vector<std::unique_ptr<ImageDataDirectory>>
 {
 	std::vector<std::unique_ptr<ImageDataDirectory>> dDirectory;
 	for (unsigned int i = 0; i < 16; i++)
@@ -79,92 +79,92 @@ auto POEX::ImageOptionalHeader::DataDirectory() -> std::vector<std::unique_ptr<I
 	return dDirectory;
 }
 
-auto POEX::ImageOptionalHeader::Magic() const -> FileType
+auto ImageOptionalHeader::Magic() const -> FileType
 {
 	return (FileType)this->bFile->ReadUnsignedShort(this->offset + 0x0000);
 }
 
-auto POEX::ImageOptionalHeader::Magic(const FileType& fileType) -> void
+auto ImageOptionalHeader::Magic(const FileType& fileType) -> void
 {
 	this->bFile->WriteUnsignedShort(this->offset + 0x0000, (unsigned short)fileType);
 }
 
-auto POEX::ImageOptionalHeader::MajorLinkerVersion() const -> byte
+auto ImageOptionalHeader::MajorLinkerVersion() const -> byte
 {
 	return this->bFile->ReadByte(this->offset + 0x0002);
 }
 
-auto POEX::ImageOptionalHeader::MajorLinkerVersion(const byte& mlVersion)
+auto ImageOptionalHeader::MajorLinkerVersion(const byte& mlVersion)
 {
 	this->bFile->WriteByte(this->offset + 0x0002, mlVersion);
 }
 
-auto POEX::ImageOptionalHeader::MinorLinkerVersion() const -> byte
+auto ImageOptionalHeader::MinorLinkerVersion() const -> byte
 {
 	return this->bFile->ReadByte(this->offset + 0x0003);
 }
 
-auto POEX::ImageOptionalHeader::MinorLinkerVersion(const byte& mlVersion)
+auto ImageOptionalHeader::MinorLinkerVersion(const byte& mlVersion)
 {
 	this->bFile->WriteByte(this->offset + 0x0003, mlVersion);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfCode() const -> unsigned int
+auto ImageOptionalHeader::SizeOfCode() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0004);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfCode(const unsigned int& sizeOfCode) -> void
+auto ImageOptionalHeader::SizeOfCode(const unsigned int& sizeOfCode) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x0004, sizeOfCode);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfInitializedData() const -> unsigned int
+auto ImageOptionalHeader::SizeOfInitializedData() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0008);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfInitializedData(const unsigned int& sizeOfInitializedData) -> void
+auto ImageOptionalHeader::SizeOfInitializedData(const unsigned int& sizeOfInitializedData) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x0008, sizeOfInitializedData);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfUninitializedData() const -> unsigned int
+auto ImageOptionalHeader::SizeOfUninitializedData() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x000C);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfUninitializedData(const unsigned int& sizeOfUninitializedData) -> void
+auto ImageOptionalHeader::SizeOfUninitializedData(const unsigned int& sizeOfUninitializedData) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x000C, sizeOfUninitializedData);
 }
 
-auto POEX::ImageOptionalHeader::AddressOfEntryPoint() const -> unsigned int
+auto ImageOptionalHeader::AddressOfEntryPoint() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0010);
 }
 
-auto POEX::ImageOptionalHeader::AddressOfEntryPoint(const unsigned int& addressOfEntryPoint) -> void
+auto ImageOptionalHeader::AddressOfEntryPoint(const unsigned int& addressOfEntryPoint) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x0010, addressOfEntryPoint);
 }
 
-auto POEX::ImageOptionalHeader::BaseOfCode() const -> unsigned int
+auto ImageOptionalHeader::BaseOfCode() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0014);
 }
 
-auto POEX::ImageOptionalHeader::BaseOfCode(const unsigned int& baseOfCode) -> void
+auto ImageOptionalHeader::BaseOfCode(const unsigned int& baseOfCode) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x0014, baseOfCode);
 }
 
-auto POEX::ImageOptionalHeader::BaseOfData() const -> unsigned int
+auto ImageOptionalHeader::BaseOfData() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0018);
 }
 
-auto POEX::ImageOptionalHeader::BaseOfData(const unsigned int& baseOfData) -> void
+auto ImageOptionalHeader::BaseOfData(const unsigned int& baseOfData) -> void
 {
 	if (!this->is64Bit) // if it's 32 bit
 		this->bFile->WriteUnsignedInt(this->offset + 0x0018, baseOfData);
@@ -172,234 +172,234 @@ auto POEX::ImageOptionalHeader::BaseOfData(const unsigned int& baseOfData) -> vo
 		THROW_EXCEPTION("[ERROR] OptionalHeader->BaseOfData does not exist in 64 bit applications.");
 }
 
-auto POEX::ImageOptionalHeader::ImageBase() const -> unsigned long
+auto ImageOptionalHeader::ImageBase() const -> unsigned long
 {
 	return this->is64Bit ? this->bFile->ReadUnsignedLong(this->offset + 0x0018) : this->bFile->ReadUnsignedInt(this->offset + 0x001C);
 }
 
-auto POEX::ImageOptionalHeader::ImageBase(const unsigned long& imageBase) -> void
+auto ImageOptionalHeader::ImageBase(const unsigned long& imageBase) -> void
 {
 	this->is64Bit ? this->bFile->WriteUnsignedLong(this->offset + 0x0018, imageBase) : this->bFile->WriteUnsignedInt(this->offset + 0x001C, unsigned int(imageBase));
 }
 
-auto POEX::ImageOptionalHeader::SectionAlignment() const -> unsigned int
+auto ImageOptionalHeader::SectionAlignment() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0020);
 }
 
-auto POEX::ImageOptionalHeader::SectionAlignment(const unsigned int& sectionAlignment) -> void
+auto ImageOptionalHeader::SectionAlignment(const unsigned int& sectionAlignment) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x0020, sectionAlignment);
 }
 
-auto POEX::ImageOptionalHeader::FileAlignment() const -> unsigned int
+auto ImageOptionalHeader::FileAlignment() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0024);
 }
 
-auto POEX::ImageOptionalHeader::FileAlignment(const unsigned int& fileAlignment) -> void
+auto ImageOptionalHeader::FileAlignment(const unsigned int& fileAlignment) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x0024, fileAlignment);
 }
 
-auto POEX::ImageOptionalHeader::MajorOperatingSystemVersion() const -> unsigned short
+auto ImageOptionalHeader::MajorOperatingSystemVersion() const -> unsigned short
 {
 	return this->bFile->ReadUnsignedShort(this->offset + 0x0028);
 }
 
-auto POEX::ImageOptionalHeader::MajorOperatingSystemVersion(const unsigned short& majorOperatingSystemVersion) -> void
+auto ImageOptionalHeader::MajorOperatingSystemVersion(const unsigned short& majorOperatingSystemVersion) -> void
 {
 	this->bFile->WriteUnsignedShort(this->offset + 0x0028, majorOperatingSystemVersion);
 }
 
-auto POEX::ImageOptionalHeader::MinorOperatingSystemVersion() const -> unsigned short
+auto ImageOptionalHeader::MinorOperatingSystemVersion() const -> unsigned short
 {
 	return this->bFile->ReadUnsignedShort(this->offset + 0x002A);
 }
 
-auto POEX::ImageOptionalHeader::MinorOperatingSystemVersion(const unsigned short& minorOperatingSystemVersion) -> void
+auto ImageOptionalHeader::MinorOperatingSystemVersion(const unsigned short& minorOperatingSystemVersion) -> void
 {
 	this->bFile->WriteUnsignedShort(this->offset + 0x002A, minorOperatingSystemVersion);
 }
 
-auto POEX::ImageOptionalHeader::MajorImageVersion() const -> unsigned short
+auto ImageOptionalHeader::MajorImageVersion() const -> unsigned short
 {
 	return this->bFile->ReadUnsignedShort(this->offset + 0x002C);
 }
 
-auto POEX::ImageOptionalHeader::MajorImageVersion(const unsigned short& majorImageVersion) -> void
+auto ImageOptionalHeader::MajorImageVersion(const unsigned short& majorImageVersion) -> void
 {
 	this->bFile->WriteUnsignedShort(this->offset + 0x002C, majorImageVersion);
 }
 
-auto POEX::ImageOptionalHeader::MinorImageVersion() const -> unsigned short
+auto ImageOptionalHeader::MinorImageVersion() const -> unsigned short
 {
 	return this->bFile->ReadUnsignedShort(this->offset + 0x002E);
 }
 
-auto POEX::ImageOptionalHeader::MinorImageVersion(const unsigned short& minorImageVersion) -> void
+auto ImageOptionalHeader::MinorImageVersion(const unsigned short& minorImageVersion) -> void
 {
 	this->bFile->WriteUnsignedShort(this->offset + 0x002E, minorImageVersion);
 }
 
-auto POEX::ImageOptionalHeader::MajorSubsystemVersion() const -> unsigned short
+auto ImageOptionalHeader::MajorSubsystemVersion() const -> unsigned short
 {
 	return this->bFile->ReadUnsignedShort(this->offset + 0x0030);
 }
 
-auto POEX::ImageOptionalHeader::MajorSubsystemVersion(const unsigned short& majorSubsystemVersion) -> void
+auto ImageOptionalHeader::MajorSubsystemVersion(const unsigned short& majorSubsystemVersion) -> void
 {
 	this->bFile->WriteUnsignedShort(this->offset + 0x0030, majorSubsystemVersion);
 }
 
-auto POEX::ImageOptionalHeader::MinorSubsystemVersion() const -> unsigned short
+auto ImageOptionalHeader::MinorSubsystemVersion() const -> unsigned short
 {
 	return this->bFile->ReadUnsignedShort(this->offset + 0x0032);
 }
 
-auto POEX::ImageOptionalHeader::MinorSubsystemVersion(const unsigned short& minorSubsystemVersion) -> void
+auto ImageOptionalHeader::MinorSubsystemVersion(const unsigned short& minorSubsystemVersion) -> void
 {
 	this->bFile->WriteUnsignedShort(this->offset + 0x0032, minorSubsystemVersion);
 }
 
-auto POEX::ImageOptionalHeader::Win32VersionValue() const -> unsigned int
+auto ImageOptionalHeader::Win32VersionValue() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0034);
 }
 
-auto POEX::ImageOptionalHeader::Win32VersionValue(const unsigned int& win32VersionValue) -> void
+auto ImageOptionalHeader::Win32VersionValue(const unsigned int& win32VersionValue) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x0034, win32VersionValue);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfImage() const -> unsigned int
+auto ImageOptionalHeader::SizeOfImage() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0038);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfImage(const unsigned int& sizeOfImage) -> void
+auto ImageOptionalHeader::SizeOfImage(const unsigned int& sizeOfImage) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x0038, sizeOfImage);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfHeaders() const -> unsigned int
+auto ImageOptionalHeader::SizeOfHeaders() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x003C);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfHeaders(const unsigned int& sizeOfHeaders) -> void
+auto ImageOptionalHeader::SizeOfHeaders(const unsigned int& sizeOfHeaders) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x003C, sizeOfHeaders);
 }
 
-auto POEX::ImageOptionalHeader::CheckSum() const -> unsigned int
+auto ImageOptionalHeader::CheckSum() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0040);
 }
 
-auto POEX::ImageOptionalHeader::CheckSum(const unsigned int& checkSum) -> void
+auto ImageOptionalHeader::CheckSum(const unsigned int& checkSum) -> void
 {
 	this->bFile->WriteUnsignedInt(this->offset + 0x0040, checkSum);
 }
 
-auto POEX::ImageOptionalHeader::Subsystem() const -> SubsystemType
+auto ImageOptionalHeader::Subsystem() const -> SubsystemType
 {
 	return (SubsystemType)this->bFile->ReadUnsignedShort(this->offset + 0x0044);
 }
 
-auto POEX::ImageOptionalHeader::Subsystem(const SubsystemType& systemType) -> void
+auto ImageOptionalHeader::Subsystem(const SubsystemType& systemType) -> void
 {
 	this->bFile->WriteUnsignedShort(this->offset + 0x0044, (unsigned short)systemType);
 }
 
-auto POEX::ImageOptionalHeader::DllCharacteristics() const -> DllCharacteristicsType
+auto ImageOptionalHeader::DllCharacteristics() const -> DllCharacteristicsType
 {
 	return (DllCharacteristicsType)this->bFile->ReadUnsignedShort(this->offset + 0x0046);
 }
 
-auto POEX::ImageOptionalHeader::DllCharacteristics(const DllCharacteristicsType& dllCharacteristicsType) -> void
+auto ImageOptionalHeader::DllCharacteristics(const DllCharacteristicsType& dllCharacteristicsType) -> void
 {
 	this->bFile->WriteUnsignedShort(this->offset + 0x0046, (unsigned short)dllCharacteristicsType);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfStackReserve() const -> unsigned long
+auto ImageOptionalHeader::SizeOfStackReserve() const -> unsigned long
 {
 	return this->is64Bit 
 		? this->bFile->ReadUnsignedLong(this->offset + 0x0048) 
 		: this->bFile->ReadUnsignedInt(this->offset + 0x0048);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfStackReserve(const unsigned long& sizeOfStackReserve) -> void
+auto ImageOptionalHeader::SizeOfStackReserve(const unsigned long& sizeOfStackReserve) -> void
 {
 	this->is64Bit 
 		? this->bFile->WriteUnsignedLong(this->offset + 0x0048, sizeOfStackReserve) 
 		: this->bFile->WriteUnsignedInt(this->offset + 0x0048, (unsigned int)sizeOfStackReserve);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfStackCommit() const -> unsigned long
+auto ImageOptionalHeader::SizeOfStackCommit() const -> unsigned long
 {
 	return this->is64Bit 
 		? this->bFile->ReadUnsignedLong(this->offset + 0x0050) 
 		: this->bFile->ReadUnsignedInt(this->offset + 0x004C);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfStackCommit(const unsigned long& sizeOfStackCommit) -> void
+auto ImageOptionalHeader::SizeOfStackCommit(const unsigned long& sizeOfStackCommit) -> void
 {
 	this->is64Bit 
 		? this->bFile->WriteUnsignedLong(this->offset + 0x0050, sizeOfStackCommit) 
 		: this->bFile->WriteUnsignedInt(this->offset + 0x004C, (unsigned int)sizeOfStackCommit);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfHeapReserve() const -> unsigned long
+auto ImageOptionalHeader::SizeOfHeapReserve() const -> unsigned long
 {
 	return this->is64Bit
 		? this->bFile->ReadUnsignedLong(this->offset + 0x0058)
 		: this->bFile->ReadUnsignedInt(this->offset + 0x0050);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfHeapReserve(const unsigned long& sizeOfHeapReserve) -> void
+auto ImageOptionalHeader::SizeOfHeapReserve(const unsigned long& sizeOfHeapReserve) -> void
 {
 	this->is64Bit
 		? this->bFile->WriteUnsignedLong(this->offset + 0x0058, sizeOfHeapReserve)
 		: this->bFile->WriteUnsignedInt(this->offset + 0x0050, (unsigned int)sizeOfHeapReserve);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfHeapCommit() const -> unsigned long
+auto ImageOptionalHeader::SizeOfHeapCommit() const -> unsigned long
 {
 	return this->is64Bit
 		? this->bFile->ReadUnsignedLong(this->offset + 0x0060)
 		: this->bFile->ReadUnsignedInt(this->offset + 0x0054);
 }
 
-auto POEX::ImageOptionalHeader::SizeOfHeapCommit(const unsigned long& sizeOfHeapCommit) -> void
+auto ImageOptionalHeader::SizeOfHeapCommit(const unsigned long& sizeOfHeapCommit) -> void
 {
 	this->is64Bit
 		? this->bFile->WriteUnsignedLong(this->offset + 0x0060, sizeOfHeapCommit)
 		: this->bFile->WriteUnsignedInt(this->offset + 0x0054, (unsigned int)sizeOfHeapCommit);
 }
 
-auto POEX::ImageOptionalHeader::LoaderFlags() const -> unsigned int
+auto ImageOptionalHeader::LoaderFlags() const -> unsigned int
 {
 	return this->is64Bit
 		? this->bFile->ReadUnsignedInt(this->offset + 0x0068)
 		: this->bFile->ReadUnsignedInt(this->offset + 0x0058);
 }
 
-auto POEX::ImageOptionalHeader::LoaderFlags(const unsigned int& loaderFlags) -> void
+auto ImageOptionalHeader::LoaderFlags(const unsigned int& loaderFlags) -> void
 {
 	this->is64Bit
 		? this->bFile->WriteUnsignedInt(this->offset + 0x0068, loaderFlags)
 		: this->bFile->WriteUnsignedInt(this->offset + 0x0058, (unsigned int)loaderFlags);
 }
 
-auto POEX::ImageOptionalHeader::NumberOfRvaAndSizes() const -> unsigned int
+auto ImageOptionalHeader::NumberOfRvaAndSizes() const -> unsigned int
 {
 	return this->is64Bit
 		? this->bFile->ReadUnsignedInt(this->offset + 0x006C)
 		: this->bFile->ReadUnsignedInt(this->offset + 0x005C);
 }
 
-auto POEX::ImageOptionalHeader::NumberOfRvaAndSizes(const unsigned int& numberOfRvaAndSizes) -> void
+auto ImageOptionalHeader::NumberOfRvaAndSizes(const unsigned int& numberOfRvaAndSizes) -> void
 {
 	this->is64Bit
 		? this->bFile->WriteUnsignedInt(this->offset + 0x006C, numberOfRvaAndSizes)

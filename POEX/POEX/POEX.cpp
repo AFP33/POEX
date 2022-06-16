@@ -41,7 +41,7 @@ auto POEX::PE::GetImageDosHeader() -> ImageDosHeader
 
 auto POEX::PE::GetImageNtHeader() -> ImageNtHeader
 {
-    return POEX::ImageNtHeader(this->bFile, GetImageDosHeader().E_lfanew());
+    return ImageNtHeader(this->bFile, GetImageDosHeader().E_lfanew());
 }
 
 auto POEX::PE::GetImageSectionHeader() -> std::vector<ImageSectionHeader>
@@ -55,7 +55,7 @@ auto POEX::PE::GetImageSectionHeader() -> std::vector<ImageSectionHeader>
 
     std::vector<ImageSectionHeader> sectionHeaders;
     for (size_t i = 0; i < numberOfSection; i++)
-        sectionHeaders.push_back(POEX::ImageSectionHeader(this->bFile, offset + static_cast<const long>(i) * SECTION_HEADER_SIZE, imageBaseAddress));
+        sectionHeaders.push_back(ImageSectionHeader(this->bFile, offset + static_cast<const long>(i) * SECTION_HEADER_SIZE, imageBaseAddress));
 
     return sectionHeaders;
 }

@@ -1,13 +1,13 @@
 #include "../Headers/ImageFileHeader.h"
 
-POEX::ImageFileHeader::ImageFileHeader(const std::shared_ptr<BufferFile>& bFile, 
+ImageFileHeader::ImageFileHeader(const std::shared_ptr<BufferFile>& bFile, 
     const long& offset) : bFile(bFile), offset(offset)
 {
 	if (WRONG_LONG(offset))
 		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
-auto POEX::ImageFileHeader::ToString(MachineType machine) -> std::string
+auto ImageFileHeader::ToString(MachineType machine) -> std::string
 {
     switch (machine)
     {
@@ -59,7 +59,7 @@ auto POEX::ImageFileHeader::ToString(MachineType machine) -> std::string
     }
 }
 
-auto POEX::ImageFileHeader::ToString(FileCharacteristicsType fileCharacteristicsType) -> std::string
+auto ImageFileHeader::ToString(FileCharacteristicsType fileCharacteristicsType) -> std::string
 {
     switch (fileCharacteristicsType)
     {
@@ -82,72 +82,72 @@ auto POEX::ImageFileHeader::ToString(FileCharacteristicsType fileCharacteristics
     }
 }
 
-auto POEX::ImageFileHeader::Machine() const -> MachineType
+auto ImageFileHeader::Machine() const -> MachineType
 {
 	return static_cast<MachineType>(this->bFile->ReadUnsignedShort(this->offset + 0x0000));
 }
 
-auto POEX::ImageFileHeader::Machine(MachineType machine) -> void
+auto ImageFileHeader::Machine(MachineType machine) -> void
 {
 	this->bFile->WriteUnsignedShort(this->offset + 0x0000, (unsigned short)machine);
 }
 
-auto POEX::ImageFileHeader::NumberOfSection() const -> unsigned short
+auto ImageFileHeader::NumberOfSection() const -> unsigned short
 {
     return this->bFile->ReadUnsignedShort(this->offset + 0x0002);
 }
 
-auto POEX::ImageFileHeader::NumberOfSection(const unsigned short& numberOfSection) -> void
+auto ImageFileHeader::NumberOfSection(const unsigned short& numberOfSection) -> void
 {
     this->bFile->WriteUnsignedShort(this->offset + 0x0002, numberOfSection);
 }
 
-auto POEX::ImageFileHeader::TimeDateStamp() const -> unsigned int
+auto ImageFileHeader::TimeDateStamp() const -> unsigned int
 {
     return this->bFile->ReadUnsignedInt(this->offset + 0x0004);
 }
 
-auto POEX::ImageFileHeader::TimeDateStamp(const unsigned int& timeDateStamp) -> void
+auto ImageFileHeader::TimeDateStamp(const unsigned int& timeDateStamp) -> void
 {
     this->bFile->WriteUnsignedInt(this->offset + 0x0004, timeDateStamp);
 }
 
-auto POEX::ImageFileHeader::PointerToSymbolTable() const -> unsigned int
+auto ImageFileHeader::PointerToSymbolTable() const -> unsigned int
 {
     return this->bFile->ReadUnsignedShort(this->offset + 0x0008);
 }
 
-auto POEX::ImageFileHeader::PointerToSymbolTable(const unsigned int& pointerToSymbolTable) -> void
+auto ImageFileHeader::PointerToSymbolTable(const unsigned int& pointerToSymbolTable) -> void
 {
     this->bFile->WriteUnsignedInt(this->offset + 0x0008, pointerToSymbolTable);
 }
 
-auto POEX::ImageFileHeader::NumberOfSymbols() const -> unsigned int
+auto ImageFileHeader::NumberOfSymbols() const -> unsigned int
 {
     return this->bFile->ReadUnsignedInt(this->offset + 0x000C);
 }
 
-auto POEX::ImageFileHeader::NumberOfSymbols(const unsigned int& numberOfSymbols) -> void
+auto ImageFileHeader::NumberOfSymbols(const unsigned int& numberOfSymbols) -> void
 {
     this->bFile->WriteUnsignedInt(this->offset + 0x000C, numberOfSymbols);
 }
 
-auto POEX::ImageFileHeader::SizeOfOptionalHeader() const -> unsigned short
+auto ImageFileHeader::SizeOfOptionalHeader() const -> unsigned short
 {
     return this->bFile->ReadUnsignedShort(this->offset + 0x0010);
 }
 
-auto POEX::ImageFileHeader::SizeOfOptionalHeader(const unsigned short& sizeOfOptionalHeader) -> void
+auto ImageFileHeader::SizeOfOptionalHeader(const unsigned short& sizeOfOptionalHeader) -> void
 {
     this->bFile->WriteUnsignedShort(this->offset + 0x0010, sizeOfOptionalHeader);
 }
 
-auto POEX::ImageFileHeader::Characteristics() const -> FileCharacteristicsType
+auto ImageFileHeader::Characteristics() const -> FileCharacteristicsType
 {
     return static_cast<FileCharacteristicsType>(this->bFile->ReadUnsignedShort(this->offset + 0x0012));
 }
 
-auto POEX::ImageFileHeader::Characteristics(FileCharacteristicsType fileCharacteristicsType) -> void
+auto ImageFileHeader::Characteristics(FileCharacteristicsType fileCharacteristicsType) -> void
 {
     this->bFile->WriteUnsignedShort(this->offset + 0x0012, (unsigned short)fileCharacteristicsType);
 }
