@@ -15,7 +15,7 @@
 | Optional Header   | Yes            |  Read, Write, Modify |
 | Section Header   | Yes            |  Read, Write, Modify |
 | Data Directories Header   | Yes            |  Read, Write, Modify |
-| Export Table (Data Directory)   | Not Yet (in progress)           |   |
+| Export Table (Data Directory)   | Yes           | Read, Write, Modify |
 | Import Table (Data Directory)   | Not Yet (in progress)           |   |
 | Resource Table (Data Directory)   | Not Yet (in progress)          |   |
 | Exception Table (Data Directory)   | Not Yet (in progress)          |   |
@@ -44,7 +44,7 @@
 
    - *you need at least C++14*
    - *minimum SDK is 10.0*
-  
+
  3. Use the output `POEX.lib` in your project
 
 
