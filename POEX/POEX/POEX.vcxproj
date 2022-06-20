@@ -24,11 +24,13 @@
     <ClInclude Include="Headers\Headers.h" />
     <ClInclude Include="Headers\ImageDataDirectory.h" />
     <ClInclude Include="Headers\ImageDosHeader.h" />
+    <ClInclude Include="Headers\ImageExportDirectory.h" />
     <ClInclude Include="Headers\ImageFileHeader.h" />
     <ClInclude Include="Headers\ImageNtHeader.h" />
     <ClInclude Include="Headers\ImageOptionalHeader.h" />
     <ClInclude Include="Headers\ImageSectionHeader.h" />
     <ClInclude Include="Headers\IRaw.h" />
+    <ClInclude Include="Headers\Utils.h" />
     <ClInclude Include="POEX.h" />
   </ItemGroup>
   <ItemGroup>
@@ -36,10 +38,12 @@
     <ClCompile Include="Sources\BufferFile.cpp" />
     <ClCompile Include="Sources\ImageDataDirectory.cpp" />
     <ClCompile Include="Sources\ImageDosHeader.cpp" />
+    <ClCompile Include="Sources\ImageExportDirectory.cpp" />
     <ClCompile Include="Sources\ImageFileHeader.cpp" />
     <ClCompile Include="Sources\ImageNtHeader.cpp" />
     <ClCompile Include="Sources\ImageOptionalHeader.cpp" />
     <ClCompile Include="Sources\ImageSectionHeader.cpp" />
+    <ClCompile Include="Sources\Utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

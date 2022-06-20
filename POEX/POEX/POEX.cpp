@@ -1,4 +1,5 @@
 #include "POEX.h"
+#include "Headers/Utils.h"
 #include <sstream>
 #include <fstream>
 #include <memory>
@@ -58,6 +59,18 @@ auto POEX::PE::GetImageSectionHeader() -> std::vector<ImageSectionHeader>
         sectionHeaders.push_back(ImageSectionHeader(this->bFile, offset + static_cast<const long>(i) * SECTION_HEADER_SIZE, imageBaseAddress));
 
     return sectionHeaders;
+}
+
+auto POEX::PE::GetImageExportDirectory() -> std::unique_ptr<ImageExportDirectory>
+{
+    auto ntHeader = this->GetImageNtHeader();
+    auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
+    auto& dataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::Export)];
+    if (dataDirectory->Size() == 0 || dataDirectory->VirtualAddress() == 0)
+        return nullptr;
+    auto offset = Utils::RvaToOffset(dataDirectory->VirtualAddress(), this->GetImageSectionHeader());
+    return std::unique_ptr<ImageExportDirectory>(
+        new ImageExportDirectory(this->bFile, offset, this->GetImageSectionHeader(), std::move(dataDirectory)));
 }
 
 auto POEX::PE::Is64Bit() const -> bool

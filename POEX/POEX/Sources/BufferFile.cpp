@@ -114,7 +114,7 @@ auto BufferFile::ReadAsciiString(const long& offset) -> std::string
 	auto pos = offset;
 	while (this->data[pos] != 0x00)
 	{
-		str.push_back(this->data[offset]);
+		str.push_back(this->data[pos]);
 		pos++;
 	}
 
