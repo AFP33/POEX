@@ -16,7 +16,7 @@
 | Section Header   | Yes            |  Read, Write, Modify |
 | Data Directories Header   | Yes            |  Read, Write, Modify |
 | Export Table (Data Directory)   | Yes           | Read, Write, Modify |
-| Import Table (Data Directory)   | Not Yet (in progress)           |   |
+| Import Table (Data Directory)   | Yes           | Read, Write, Modify  |
 | Resource Table (Data Directory)   | Not Yet (in progress)          |   |
 | Exception Table (Data Directory)   | Not Yet (in progress)          |   |
 | Certificate Table (Data Directory)   | Not Yet (in progress)           |   |
@@ -27,7 +27,7 @@
 | TLS Table (Data Directory)   | Not Yet (in progress)          |   |
 | Load Config Table (Data Directory)   | Not Yet (in progress)          |   |
 | Bound Import (Data Directory)   | Not Yet (in progress)          |   |
-| IAT (Data Directory)   | Not Yet (in progress)          |   |
+| IAT (Data Directory)   | Yes          |  Read  |
 | Delay Import Descriptor (Data Directory)   | Not Yet (in progress)          |   |
 | CLR Runtime Header (Data Directory)   | Not Yet (in progress)          |   |
 | Reserved (Data Directory)   | Not Yet (in progress)          |   |
