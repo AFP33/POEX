@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Headers/ImageExportDirectory.h"
+#include "Headers/ImageImportDirectory.h"
 #include "Headers/ImageSectionHeader.h"
 #include "Headers/ImageDosHeader.h"
 #include "Headers/ImageNtHeader.h"
@@ -49,6 +50,12 @@ namespace POEX
 		/// </summary>
 		/// <returns>Object of ImageExportDirector</returns>
 		auto GetImageExportDirectory()->std::unique_ptr<ImageExportDirectory>;
+
+		/// <summary>
+		/// Access to Import Directory Table
+		/// </summary>
+		/// <returns>List of all Image Directory Table exist in PE.</returns>
+		auto GetImageImportDirectory()->std::vector<std::unique_ptr<ImageImportDirectory>>;
 
 		/// <summary>
 		/// Is the PE 64bit file?

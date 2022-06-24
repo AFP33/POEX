@@ -65,12 +65,46 @@ auto POEX::PE::GetImageExportDirectory() -> std::unique_ptr<ImageExportDirectory
 {
     auto ntHeader = this->GetImageNtHeader();
     auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
-    auto& dataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::Export)];
-    if (dataDirectory->Size() == 0 || dataDirectory->VirtualAddress() == 0)
+    auto& exportDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::Export)];
+    if (exportDataDirectory->Size() == 0 || exportDataDirectory->VirtualAddress() == 0)
         return nullptr;
-    auto offset = Utils::RvaToOffset(dataDirectory->VirtualAddress(), this->GetImageSectionHeader());
+    auto offset = Utils::RvaToOffset(exportDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
     return std::unique_ptr<ImageExportDirectory>(
-        new ImageExportDirectory(this->bFile, offset, this->GetImageSectionHeader(), std::move(dataDirectory)));
+        new ImageExportDirectory(this->bFile, offset, this->GetImageSectionHeader(), std::move(exportDataDirectory)));
+}
+
+auto POEX::PE::GetImageImportDirectory() -> std::vector<std::unique_ptr<ImageImportDirectory>>
+{
+    std::vector<std::unique_ptr<ImageImportDirectory>> importTables;
+    auto ntHeader = this->GetImageNtHeader();
+    auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
+    auto& importDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::Import)];
+    auto& iatDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::IAT)];
+    if (importDataDirectory->Size() == 0 || importDataDirectory->VirtualAddress() == 0)
+        return importTables;
+    auto offset = Utils::RvaToOffset(importDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
+    if (offset == 0)
+        return importTables;
+
+    unsigned int iterator = 0;
+
+    while (true)
+    {
+        auto imageImportDirectory = std::unique_ptr<ImageImportDirectory>(new ImageImportDirectory(this->bFile, 
+            offset + IMPORT_TABLE_SIZE * iterator, this->GetImageSectionHeader(), iatDataDirectory->VirtualAddress(), this->Is64Bit()));
+
+        // Found the last ImageImportDescriptor which is completely null (except TimeDateStamp).
+        if (imageImportDirectory->ImportLookupTable() == 0 &&
+                imageImportDirectory->ForwarderChain() == 0 &&
+                imageImportDirectory->Name() == 0 &&
+                imageImportDirectory->ImportAddressTable() == 0)
+            break;
+
+        importTables.push_back(std::move(imageImportDirectory));
+        iterator++;
+    }
+
+    return importTables;
 }
 
 auto POEX::PE::Is64Bit() const -> bool

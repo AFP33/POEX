@@ -13,6 +13,16 @@
 #define SECTION_HEADER_SIZE 0x0028
 #define ELFANEW 0x003C
 #define PE_SIGNATURE_UNTIL_MAGIC 0x0018
+#define IMPORT_TABLE_SIZE 0x0014
+
+#define IMAGE_THUNK_DATA_86 0x0004
+#define IMAGE_THUNK_DATA_64 0x0008
+
+#define ORDINAL_BIT_86 0x80000000
+#define ORDINAL_BIT_64 0x8000000000000000
+
+#define ORDINAL_MASK_64 0x7FFFFFFFFFFFFFFF
+#define ORDINAL_MASK_86 0x7FFFFFFF
 
 /// <summary> 
 /// File type architecture also Constants for the Optional header magic property.
