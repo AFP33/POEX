@@ -107,6 +107,25 @@ auto POEX::PE::GetImageImportDirectory() -> std::vector<std::unique_ptr<ImageImp
     return importTables;
 }
 
+auto POEX::PE::GetImageExceptionDirectory() -> std::unique_ptr<ImageExceptionDirectory>
+{
+    try
+    {
+        auto ntHeader = this->GetImageNtHeader();
+        auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
+        auto& exceptionDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::Exception)];
+        auto offset = Utils::RvaToOffset(exceptionDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
+
+        return std::unique_ptr<ImageExceptionDirectory>(
+            new ImageExceptionDirectory(this->bFile, offset, this->GetImageSectionHeader(), this->Is32Bit(), 
+                exceptionDataDirectory->Size()));
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
+}
+
 auto POEX::PE::Is64Bit() const -> bool
 {
     return this->bFile->ReadUnsignedShort(this->bFile->ReadUnsignedInt(ELFANEW) + PE_SIGNATURE_UNTIL_MAGIC) == (unsigned short)FileType::BIT64;

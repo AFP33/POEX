@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Headers/ImageExceptionDirectory.h"
 #include "Headers/ImageExportDirectory.h"
 #include "Headers/ImageImportDirectory.h"
 #include "Headers/ImageSectionHeader.h"
@@ -56,6 +57,12 @@ namespace POEX
 		/// </summary>
 		/// <returns>List of all Image Directory Table exist in PE.</returns>
 		auto GetImageImportDirectory()->std::vector<std::unique_ptr<ImageImportDirectory>>;
+
+		/// <summary>
+		/// Access to Image Exception Directory Table
+		/// </summary>
+		/// <returns></returns>
+		auto GetImageExceptionDirectory() -> std::unique_ptr<ImageExceptionDirectory>;
 
 		/// <summary>
 		/// Is the PE 64bit file?

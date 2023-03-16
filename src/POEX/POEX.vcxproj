@@ -24,6 +24,7 @@
     <ClInclude Include="Headers\Headers.h" />
     <ClInclude Include="Headers\ImageDataDirectory.h" />
     <ClInclude Include="Headers\ImageDosHeader.h" />
+    <ClInclude Include="Headers\ImageExceptionDirectory.h" />
     <ClInclude Include="Headers\ImageExportDirectory.h" />
     <ClInclude Include="Headers\ImageFileHeader.h" />
     <ClInclude Include="Headers\ImageImportDirectory.h" />
@@ -39,6 +40,7 @@
     <ClCompile Include="Sources\BufferFile.cpp" />
     <ClCompile Include="Sources\ImageDataDirectory.cpp" />
     <ClCompile Include="Sources\ImageDosHeader.cpp" />
+    <ClCompile Include="Sources\ImageExceptionDirectory.cpp" />
     <ClCompile Include="Sources\ImageExportDirectory.cpp" />
     <ClCompile Include="Sources\ImageFileHeader.cpp" />
     <ClCompile Include="Sources\ImageImportDirectory.cpp" />
@@ -58,26 +60,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
