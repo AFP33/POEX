@@ -17,8 +17,8 @@
 | Data Directories Header   | Yes            |  Read, Write, Modify |
 | Export Table (Data Directory)   | Yes           | Read, Write, Modify |
 | Import Table (Data Directory)   | Yes           | Read, Write, Modify  |
-| Resource Table (Data Directory)   | Not Yet (in progress)          |   |
-| Exception Table (Data Directory)   | Not Yet (in progress)          |   |
+| Resource Table (Data Directory)   | Yes          | Read, Write, Modify  |
+| Exception Table (Data Directory)   | Yes          | Read, Write, Modify  |
 | Certificate Table (Data Directory)   | Not Yet (in progress)           |   |
 | Base Relocation Table (Data Directory)   | Not Yet (in progress)           |   |
 | Debug (Data Directory)   | Not Yet (in progress)           |   |
