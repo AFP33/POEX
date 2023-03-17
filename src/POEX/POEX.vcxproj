@@ -32,6 +32,7 @@
     <ClInclude Include="Headers\ImageOptionalHeader.h" />
     <ClInclude Include="Headers\ImageResourceDirectory.h" />
     <ClInclude Include="Headers\ImageSectionHeader.h" />
+    <ClInclude Include="Headers\ImageTlsDirectory.h" />
     <ClInclude Include="Headers\IRaw.h" />
     <ClInclude Include="Headers\Utils.h" />
     <ClInclude Include="POEX.h" />
@@ -49,6 +50,7 @@
     <ClCompile Include="Sources\ImageOptionalHeader.cpp" />
     <ClCompile Include="Sources\ImageResourceDirectory.cpp" />
     <ClCompile Include="Sources\ImageSectionHeader.cpp" />
+    <ClCompile Include="Sources\ImageTlsDirectory.cpp" />
     <ClCompile Include="Sources\Utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

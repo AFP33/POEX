@@ -1,6 +1,20 @@
 #include "../Headers/Utils.h"
 #include <functional>
 
+auto Utils::VaToOffset(const unsigned long& virtualAddress, const std::vector<ImageSectionHeader>& sectionHeaders) -> unsigned long
+{
+	try
+	{
+		auto firstObj = sectionHeaders.front();
+		auto rva = virtualAddress - firstObj.ImageBaseAddress();
+		return Utils::RvaToOffset(rva, sectionHeaders);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
+}
+
 auto Utils::RvaToOffset(const unsigned int& virtualAddress, const std::vector<ImageSectionHeader>& sectionHeaders) -> unsigned int
 {
 	if (sectionHeaders.size() == 0)

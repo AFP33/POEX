@@ -143,6 +143,24 @@ auto POEX::PE::GetImageExceptionDirectory() -> std::unique_ptr<ImageExceptionDir
     }
 }
 
+auto POEX::PE::GetImageTlsDirectory() -> std::unique_ptr<ImageTlsDirectory>
+{
+    try
+    {
+        auto ntHeader = this->GetImageNtHeader();
+        auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
+        auto& tlsDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::TLS)];
+        auto offset = Utils::RvaToOffset(tlsDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
+
+        return std::unique_ptr<ImageTlsDirectory>(new ImageTlsDirectory(this->bFile, offset, 
+            this->GetImageSectionHeader(), this->Is64Bit()));
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
+}
+
 auto POEX::PE::Is64Bit() const -> bool
 {
     return this->bFile->ReadUnsignedShort(this->bFile->ReadUnsignedInt(ELFANEW) + PE_SIGNATURE_UNTIL_MAGIC) == (unsigned short)FileType::BIT64;

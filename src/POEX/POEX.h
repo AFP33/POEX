@@ -5,6 +5,7 @@
 #include "Headers/ImageExportDirectory.h"
 #include "Headers/ImageImportDirectory.h"
 #include "Headers/ImageSectionHeader.h"
+#include "Headers/ImageTlsDirectory.h"
 #include "Headers/ImageDosHeader.h"
 #include "Headers/ImageNtHeader.h"
 #include "Headers/IRaw.h"
@@ -71,6 +72,12 @@ namespace POEX
 		/// </summary>
 		/// <returns></returns>
 		auto GetImageExceptionDirectory() -> std::unique_ptr<ImageExceptionDirectory>;
+
+		/// <summary>
+		/// Access to Image TLS Directory
+		/// </summary>
+		/// <returns>Pointer of ImageTlsDirectory class</returns>
+		auto GetImageTlsDirectory() -> std::unique_ptr<ImageTlsDirectory>;
 
 		/// <summary>
 		/// Is the PE 64bit file?
