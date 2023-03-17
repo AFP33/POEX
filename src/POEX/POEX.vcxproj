@@ -28,6 +28,7 @@
     <ClInclude Include="Headers\ImageExportDirectory.h" />
     <ClInclude Include="Headers\ImageFileHeader.h" />
     <ClInclude Include="Headers\ImageImportDirectory.h" />
+    <ClInclude Include="Headers\ImageLoadConfigDirectory.h" />
     <ClInclude Include="Headers\ImageNtHeader.h" />
     <ClInclude Include="Headers\ImageOptionalHeader.h" />
     <ClInclude Include="Headers\ImageResourceDirectory.h" />
@@ -46,6 +47,7 @@
     <ClCompile Include="Sources\ImageExportDirectory.cpp" />
     <ClCompile Include="Sources\ImageFileHeader.cpp" />
     <ClCompile Include="Sources\ImageImportDirectory.cpp" />
+    <ClCompile Include="Sources\ImageLoadConfigDirectory.cpp" />
     <ClCompile Include="Sources\ImageNtHeader.cpp" />
     <ClCompile Include="Sources\ImageOptionalHeader.cpp" />
     <ClCompile Include="Sources\ImageResourceDirectory.cpp" />

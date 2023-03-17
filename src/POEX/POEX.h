@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Headers/ImageLoadConfigDirectory.h"
 #include "Headers/ImageExceptionDirectory.h"
 #include "Headers/ImageResourceDirectory.h"
 #include "Headers/ImageExportDirectory.h"
@@ -78,6 +79,12 @@ namespace POEX
 		/// </summary>
 		/// <returns>Pointer of ImageTlsDirectory class</returns>
 		auto GetImageTlsDirectory() -> std::unique_ptr<ImageTlsDirectory>;
+
+		/// <summary>
+		/// Access to Image Load Configuration Directory
+		/// </summary>
+		/// <returns></returns>
+		auto GetImageLoadConfigDirectory() -> std::unique_ptr<ImageLoadConfigDirectory>;
 
 		/// <summary>
 		/// Is the PE 64bit file?

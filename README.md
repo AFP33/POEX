@@ -25,7 +25,7 @@
 | Architecture (Data Directory)   | Not Yet (in progress)           |   |
 | Global Ptr (Data Directory)   | Not Yet (in progress)           |   |
 | TLS Table (Data Directory)   | Yes          | Read, Write, Modify |
-| Load Config Table (Data Directory)   | Not Yet (in progress)          |   |
+| Load Config Table (Data Directory)   | Yes          | Read, Write, Modify |
 | Bound Import (Data Directory)   | Not Yet (in progress)          |   |
 | IAT (Data Directory)   | Yes          |  Read  |
 | Delay Import Descriptor (Data Directory)   | Not Yet (in progress)          |   |
