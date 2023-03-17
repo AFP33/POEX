@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Headers/ImageExceptionDirectory.h"
+#include "Headers/ImageResourceDirectory.h"
 #include "Headers/ImageExportDirectory.h"
 #include "Headers/ImageImportDirectory.h"
 #include "Headers/ImageSectionHeader.h"
@@ -57,6 +58,13 @@ namespace POEX
 		/// </summary>
 		/// <returns>List of all Image Directory Table exist in PE.</returns>
 		auto GetImageImportDirectory()->std::vector<std::unique_ptr<ImageImportDirectory>>;
+
+		/// <summary>
+		/// The resource directory contains icons, mouse pointer, string language files etc. 
+		/// which are used by the application.
+		/// </summary>
+		/// <returns></returns>
+		auto GetImageResourceDirectory() -> std::unique_ptr<ImageResourceDirectory>;
 
 		/// <summary>
 		/// Access to Image Exception Directory Table

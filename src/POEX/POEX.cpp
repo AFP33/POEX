@@ -107,6 +107,23 @@ auto POEX::PE::GetImageImportDirectory() -> std::vector<std::unique_ptr<ImageImp
     return importTables;
 }
 
+auto POEX::PE::GetImageResourceDirectory() -> std::unique_ptr<ImageResourceDirectory>
+{
+    try
+    {
+        auto ntHeader = this->GetImageNtHeader();
+        auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
+        auto& resourceDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::Resource)];
+        auto offset = Utils::RvaToOffset(resourceDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
+        
+        return std::make_unique<ImageResourceDirectory>(this->bFile, offset, offset, resourceDataDirectory->Size());
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
+}
+
 auto POEX::PE::GetImageExceptionDirectory() -> std::unique_ptr<ImageExceptionDirectory>
 {
     try

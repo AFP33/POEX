@@ -30,6 +30,7 @@
     <ClInclude Include="Headers\ImageImportDirectory.h" />
     <ClInclude Include="Headers\ImageNtHeader.h" />
     <ClInclude Include="Headers\ImageOptionalHeader.h" />
+    <ClInclude Include="Headers\ImageResourceDirectory.h" />
     <ClInclude Include="Headers\ImageSectionHeader.h" />
     <ClInclude Include="Headers\IRaw.h" />
     <ClInclude Include="Headers\Utils.h" />
@@ -46,6 +47,7 @@
     <ClCompile Include="Sources\ImageImportDirectory.cpp" />
     <ClCompile Include="Sources\ImageNtHeader.cpp" />
     <ClCompile Include="Sources\ImageOptionalHeader.cpp" />
+    <ClCompile Include="Sources\ImageResourceDirectory.cpp" />
     <ClCompile Include="Sources\ImageSectionHeader.cpp" />
     <ClCompile Include="Sources\Utils.cpp" />
   </ItemGroup>
