@@ -180,6 +180,36 @@ auto POEX::PE::GetImageLoadConfigDirectory() -> std::unique_ptr<ImageLoadConfigD
     }
 }
 
+auto POEX::PE::GetImageBaseRelocation() -> std::vector<std::unique_ptr<ImageBaseRelocation>>
+{
+    try
+    {
+        auto ntHeader = this->GetImageNtHeader();
+        auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
+        auto& relocationDataDirectory = dataDirectories[static_cast<int>(
+            DataDirectoryType::BaseReloc)];
+        auto offset = Utils::RvaToOffset(relocationDataDirectory->VirtualAddress(), 
+            this->GetImageSectionHeader());
+        std::vector<std::unique_ptr<ImageBaseRelocation>> imageBaseRelocations;
+        auto currentBlock = offset;
+
+        while (true)
+        {
+            if (currentBlock >= offset + relocationDataDirectory->Size() - 8)
+                break;
+            imageBaseRelocations.push_back(std::make_unique<ImageBaseRelocation>(this->bFile, 
+                currentBlock, relocationDataDirectory->Size()));
+            currentBlock += imageBaseRelocations.back()->SizeOfBlock();
+        }
+
+        return imageBaseRelocations;
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
+}
+
 auto POEX::PE::Is64Bit() const -> bool
 {
     return this->bFile->ReadUnsignedShort(this->bFile->ReadUnsignedInt(ELFANEW) + PE_SIGNATURE_UNTIL_MAGIC) == (unsigned short)FileType::BIT64;

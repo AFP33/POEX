@@ -69,6 +69,9 @@
     <ClInclude Include="Headers\ImageLoadConfigDirectory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\ImageBaseRelocation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\BufferFile.cpp">
@@ -114,6 +117,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\ImageLoadConfigDirectory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\ImageBaseRelocation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
