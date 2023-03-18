@@ -210,6 +210,25 @@ auto POEX::PE::GetImageBaseRelocation() -> std::vector<std::unique_ptr<ImageBase
     }
 }
 
+auto POEX::PE::GetImageDelayImportDescriptor() -> std::unique_ptr<ImageDelayImportDescriptor>
+{
+    try
+    {
+        auto ntHeader = this->GetImageNtHeader();
+        auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
+        auto& delayImportDataDirectory = dataDirectories[static_cast<int>(
+            DataDirectoryType::DelayImport)];
+        auto offset = Utils::RvaToOffset(delayImportDataDirectory->VirtualAddress(),
+            this->GetImageSectionHeader());
+
+        return std::make_unique<ImageDelayImportDescriptor>(this->bFile, offset);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
+}
+
 auto POEX::PE::Is64Bit() const -> bool
 {
     return this->bFile->ReadUnsignedShort(this->bFile->ReadUnsignedInt(ELFANEW) + PE_SIGNATURE_UNTIL_MAGIC) == (unsigned short)FileType::BIT64;

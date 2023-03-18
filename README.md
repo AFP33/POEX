@@ -28,7 +28,7 @@
 | Load Config Table (Data Directory)   | Yes          | Read, Write, Modify |
 | Bound Import (Data Directory)   | Not Yet (in progress)          |   |
 | IAT (Data Directory)   | Yes          |  Read  |
-| Delay Import Descriptor (Data Directory)   | Not Yet (in progress)          |   |
+| Delay Import Descriptor (Data Directory)   | Yes          | Read, Write, Modify |
 | CLR Runtime Header (Data Directory)   | Not Yet (in progress)          |   |
 | Reserved (Data Directory)   | Not Yet (in progress)          |   |
 

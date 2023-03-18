@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Headers/ImageDelayImportDescriptor.h"
 #include "Headers/ImageLoadConfigDirectory.h"
 #include "Headers/ImageExceptionDirectory.h"
 #include "Headers/ImageResourceDirectory.h"
@@ -92,6 +93,12 @@ namespace POEX
 		/// </summary>
 		/// <returns></returns>
 		auto GetImageBaseRelocation() -> std::vector<std::unique_ptr<ImageBaseRelocation>>;
+
+		/// <summary>
+		/// Access to Delay Import Descriptor
+		/// </summary>
+		/// <returns>Pointer of ImageDelayImportDescriptor class</returns>
+		auto GetImageDelayImportDescriptor() -> std::unique_ptr<ImageDelayImportDescriptor>;
 
 		/// <summary>
 		/// Is the PE 64bit file?
