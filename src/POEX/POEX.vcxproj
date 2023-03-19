@@ -24,6 +24,7 @@
     <ClInclude Include="Headers\Headers.h" />
     <ClInclude Include="Headers\ImageBaseRelocation.h" />
     <ClInclude Include="Headers\ImageDataDirectory.h" />
+    <ClInclude Include="Headers\ImageDebugDirectory.h" />
     <ClInclude Include="Headers\ImageDelayImportDescriptor.h" />
     <ClInclude Include="Headers\ImageDosHeader.h" />
     <ClInclude Include="Headers\ImageExceptionDirectory.h" />
@@ -45,6 +46,7 @@
     <ClCompile Include="Sources\BufferFile.cpp" />
     <ClCompile Include="Sources\ImageBaseRelocation.cpp" />
     <ClCompile Include="Sources\ImageDataDirectory.cpp" />
+    <ClCompile Include="Sources\ImageDebugDirectory.cpp" />
     <ClCompile Include="Sources\ImageDelayImportDescriptor.cpp" />
     <ClCompile Include="Sources\ImageDosHeader.cpp" />
     <ClCompile Include="Sources\ImageExceptionDirectory.cpp" />

@@ -229,6 +229,30 @@ auto POEX::PE::GetImageDelayImportDescriptor() -> std::unique_ptr<ImageDelayImpo
     }
 }
 
+auto POEX::PE::GetImageDebugDirectory() -> std::vector<std::unique_ptr<ImageDebugDirectory>>
+{
+    try
+    {
+        auto debugEntrySize = 28;
+        auto ntHeader = this->GetImageNtHeader();
+        auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
+        auto& debugDataDirectory = dataDirectories[static_cast<int>(
+            DataDirectoryType::Debug)];
+        auto offset = Utils::RvaToOffset(debugDataDirectory->VirtualAddress(),
+            this->GetImageSectionHeader());
+
+        auto numEntries = debugDataDirectory->Size() / debugEntrySize;
+        std::vector<std::unique_ptr<ImageDebugDirectory>> debugDirectories;
+        for (size_t i = 0; i < numEntries; i++)
+            debugDirectories.push_back(std::make_unique<ImageDebugDirectory>(this->bFile, offset));
+        return debugDirectories;
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
+}
+
 auto POEX::PE::Is64Bit() const -> bool
 {
     return this->bFile->ReadUnsignedShort(this->bFile->ReadUnsignedInt(ELFANEW) + PE_SIGNATURE_UNTIL_MAGIC) == (unsigned short)FileType::BIT64;

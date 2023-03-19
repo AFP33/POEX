@@ -21,7 +21,7 @@
 | Exception Table (Data Directory)   | Yes          | Read, Write, Modify  |
 | Certificate Table (Data Directory)   | Not Yet (in progress)           |   |
 | Base Relocation Table (Data Directory)   | Yes           | Read, Write, Modify |
-| Debug (Data Directory)   | Not Yet (in progress)           |   |
+| Debug (Data Directory)   | Yes           | Read, Write, Modify |
 | Architecture (Data Directory)   | Not Yet (in progress)           |   |
 | Global Ptr (Data Directory)   | Not Yet (in progress)           |   |
 | TLS Table (Data Directory)   | Yes          | Read, Write, Modify |

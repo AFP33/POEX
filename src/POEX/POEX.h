@@ -6,6 +6,7 @@
 #include "Headers/ImageResourceDirectory.h"
 #include "Headers/ImageExportDirectory.h"
 #include "Headers/ImageImportDirectory.h"
+#include "Headers/ImageDebugDirectory.h"
 #include "Headers/ImageBaseRelocation.h"
 #include "Headers/ImageSectionHeader.h"
 #include "Headers/ImageTlsDirectory.h"
@@ -99,6 +100,12 @@ namespace POEX
 		/// </summary>
 		/// <returns>Pointer of ImageDelayImportDescriptor class</returns>
 		auto GetImageDelayImportDescriptor() -> std::unique_ptr<ImageDelayImportDescriptor>;
+
+		/// <summary>
+		/// Access to Image Debug Directory
+		/// </summary>
+		/// <returns></returns>
+		auto GetImageDebugDirectory() -> std::vector<std::unique_ptr<ImageDebugDirectory>>;
 
 		/// <summary>
 		/// Is the PE 64bit file?
