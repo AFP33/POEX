@@ -22,7 +22,7 @@
 | Certificate Table (Data Directory)   | Yes           | Read, Write, Modify |
 | Base Relocation Table (Data Directory)   | Yes           | Read, Write, Modify |
 | Debug (Data Directory)   | Yes           | Read, Write, Modify |
-| Architecture (Data Directory)   | Not Yet (in progress)           |   |
+| Architecture (Data Directory)   | useless           | useless |
 | Global Ptr (Data Directory)   | Not Yet (in progress)           |   |
 | TLS Table (Data Directory)   | Yes          | Read, Write, Modify |
 | Load Config Table (Data Directory)   | Yes          | Read, Write, Modify |
@@ -30,7 +30,7 @@
 | IAT (Data Directory)   | Yes          |  Read  |
 | Delay Import Descriptor (Data Directory)   | Yes          | Read, Write, Modify |
 | CLR Runtime Header (Data Directory)   | Not Yet (in progress)          |   |
-| Reserved (Data Directory)   | Not Yet (in progress)          |   |
+| Reserved (Data Directory)   | useless          | useless |
 
 
 - ### How to Build the Library?
