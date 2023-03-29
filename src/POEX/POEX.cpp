@@ -275,6 +275,27 @@ auto POEX::PE::GetImageBoundImportDirectory() -> std::unique_ptr<ImageBoundImpor
     }
 }
 
+auto POEX::PE::GetImageCertificateDirectory() -> std::unique_ptr<ImageCertificateDirectory>
+{
+    try
+    {
+        auto ntHeader = this->GetImageNtHeader();
+        auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
+        auto& securityDataDirectory = dataDirectories[static_cast<int>(
+            DataDirectoryType::Security)];
+        if (securityDataDirectory->Size() == 0 || securityDataDirectory->VirtualAddress() == 0)
+            return NULL;
+
+        // The security directory is the only one where the DATA_DIRECTORY VirtualAddress 
+        // is not an RVA but an raw offset.
+        return std::make_unique<ImageCertificateDirectory>(this->bFile, securityDataDirectory->VirtualAddress());
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
+}
+
 auto POEX::PE::Is64Bit() const -> bool
 {
     return this->bFile->ReadUnsignedShort(this->bFile->ReadUnsignedInt(ELFANEW) + PE_SIGNATURE_UNTIL_MAGIC) == (unsigned short)FileType::BIT64;

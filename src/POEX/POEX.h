@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Headers/ImageDelayImportDescriptor.h"
+#include "Headers/ImageCertificateDirectory.h"
 #include "Headers/ImageLoadConfigDirectory.h"
 #include "Headers/ImageExceptionDirectory.h"
 #include "Headers/ImageResourceDirectory.h"
@@ -113,6 +114,12 @@ namespace POEX
 		/// </summary>
 		/// <returns></returns>
 		auto GetImageBoundImportDirectory() -> std::unique_ptr<ImageBoundImport>;
+
+		/// <summary>
+		/// Access to Image Certificate (Security) Directory
+		/// </summary>
+		/// <returns></returns>
+		auto GetImageCertificateDirectory() -> std::unique_ptr<ImageCertificateDirectory>;
 
 		/// <summary>
 		/// Is the PE 64bit file?

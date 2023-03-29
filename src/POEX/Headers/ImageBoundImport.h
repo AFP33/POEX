@@ -2,9 +2,17 @@
 
 #include "BufferFile.h"
 
+/// <summary>
+/// Bound import descriptor.
+/// </summary>
 class ImageBoundImport
 {
 public:
+	/// <summary>
+	///  Create a new ImageBoundImport object.
+	/// </summary>
+	/// <param name="bFile">A PE file.</param>
+	/// <param name="offset">Offset of the structure in the buffer.</param>
 	ImageBoundImport(const std::shared_ptr<BufferFile>& bFile, const long& offset);
 	~ImageBoundImport() = default;
 
