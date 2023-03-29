@@ -26,7 +26,7 @@
 | Global Ptr (Data Directory)   | Not Yet (in progress)           |   |
 | TLS Table (Data Directory)   | Yes          | Read, Write, Modify |
 | Load Config Table (Data Directory)   | Yes          | Read, Write, Modify |
-| Bound Import (Data Directory)   | Not Yet (in progress)          |   |
+| Bound Import (Data Directory)   | Yes          | Read, Write, Modify |
 | IAT (Data Directory)   | Yes          |  Read  |
 | Delay Import Descriptor (Data Directory)   | Yes          | Read, Write, Modify |
 | CLR Runtime Header (Data Directory)   | Not Yet (in progress)          |   |

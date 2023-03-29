@@ -253,6 +253,28 @@ auto POEX::PE::GetImageDebugDirectory() -> std::vector<std::unique_ptr<ImageDebu
     }
 }
 
+auto POEX::PE::GetImageBoundImportDirectory() -> std::unique_ptr<ImageBoundImport>
+{
+    try
+    {
+        auto ntHeader = this->GetImageNtHeader();
+        auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
+        auto& boundImportDataDirectory = dataDirectories[static_cast<int>(
+            DataDirectoryType::BoundImport)];
+        if (boundImportDataDirectory->Size() == 0 || boundImportDataDirectory->VirtualAddress() == 0)
+            return NULL;
+
+        auto offset = Utils::RvaToOffset(boundImportDataDirectory->VirtualAddress(),
+            this->GetImageSectionHeader());
+
+        return std::make_unique<ImageBoundImport>(this->bFile, offset);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
+}
+
 auto POEX::PE::Is64Bit() const -> bool
 {
     return this->bFile->ReadUnsignedShort(this->bFile->ReadUnsignedInt(ELFANEW) + PE_SIGNATURE_UNTIL_MAGIC) == (unsigned short)FileType::BIT64;

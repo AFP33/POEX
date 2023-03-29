@@ -10,6 +10,7 @@
 #include "Headers/ImageBaseRelocation.h"
 #include "Headers/ImageSectionHeader.h"
 #include "Headers/ImageTlsDirectory.h"
+#include "Headers/ImageBoundImport.h"
 #include "Headers/ImageDosHeader.h"
 #include "Headers/ImageNtHeader.h"
 #include "Headers/IRaw.h"
@@ -106,6 +107,12 @@ namespace POEX
 		/// </summary>
 		/// <returns></returns>
 		auto GetImageDebugDirectory() -> std::vector<std::unique_ptr<ImageDebugDirectory>>;
+
+		/// <summary>
+		/// Access to Image Bound Import Directory
+		/// </summary>
+		/// <returns></returns>
+		auto GetImageBoundImportDirectory() -> std::unique_ptr<ImageBoundImport>;
 
 		/// <summary>
 		/// Is the PE 64bit file?
