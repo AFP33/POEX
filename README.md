@@ -19,7 +19,7 @@
 | Import Table (Data Directory)   | Yes           | Read, Write, Modify  |
 | Resource Table (Data Directory)   | Yes          | Read, Write, Modify  |
 | Exception Table (Data Directory)   | Yes          | Read, Write, Modify  |
-| Certificate Table (Data Directory)   | Not Yet (in progress)           |   |
+| Certificate Table (Data Directory)   | Yes           | Read, Write, Modify |
 | Base Relocation Table (Data Directory)   | Yes           | Read, Write, Modify |
 | Debug (Data Directory)   | Yes           | Read, Write, Modify |
 | Architecture (Data Directory)   | Not Yet (in progress)           |   |
