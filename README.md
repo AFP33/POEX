@@ -23,13 +23,13 @@
 | Base Relocation Table (Data Directory)   | Yes           | Read, Write, Modify |
 | Debug (Data Directory)   | Yes           | Read, Write, Modify |
 | Architecture (Data Directory)   | useless           | useless |
-| Global Ptr (Data Directory)   | Not Yet (in progress)           |   |
+| Global Ptr (Data Directory)   | Yes           | Access |
 | TLS Table (Data Directory)   | Yes          | Read, Write, Modify |
 | Load Config Table (Data Directory)   | Yes          | Read, Write, Modify |
 | Bound Import (Data Directory)   | Yes          | Read, Write, Modify |
 | IAT (Data Directory)   | Yes          |  Read  |
 | Delay Import Descriptor (Data Directory)   | Yes          | Read, Write, Modify |
-| CLR Runtime Header (Data Directory)   | Not Yet (in progress)          |   |
+| CLR Runtime Header (Data Directory)   | Yes          | Read, Write, Modify |
 | Reserved (Data Directory)   | useless          | useless |
 
 

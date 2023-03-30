@@ -9,6 +9,7 @@
 #include "Headers/ImageImportDirectory.h"
 #include "Headers/ImageDebugDirectory.h"
 #include "Headers/ImageBaseRelocation.h"
+#include "Headers/ImageComDescriptor.h"
 #include "Headers/ImageSectionHeader.h"
 #include "Headers/ImageTlsDirectory.h"
 #include "Headers/ImageBoundImport.h"
@@ -120,6 +121,12 @@ namespace POEX
 		/// </summary>
 		/// <returns></returns>
 		auto GetImageCertificateDirectory() -> std::unique_ptr<ImageCertificateDirectory>;
+
+		/// <summary>
+		/// Access the ImageCor20Header (COM Descriptor/CLI) from the data directory.
+		/// </summary>
+		/// <returns>Pointer of ImageComDescriptor</returns>
+		auto GetImageComDescriptor() -> std::unique_ptr<ImageComDescriptor>;
 
 		/// <summary>
 		/// Is the PE 64bit file?

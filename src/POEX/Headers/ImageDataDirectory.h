@@ -3,8 +3,8 @@
 #include "BufferFile.h"
 
 /// <summary>
-	/// The ImageDataDirectory struct represents the data directory of image
-	/// </summary>
+/// The ImageDataDirectory struct represents the data directory of image
+/// </summary>
 class ImageDataDirectory
 {
 public:
@@ -15,6 +15,7 @@ public:
 	/// <param name="offset">Location of start specific Data Directory</param>
 	/// <param name="dataDirectoryType">Type of Data Directory</param>
 	ImageDataDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset, const DataDirectoryType& dataDirectoryType);
+	ImageDataDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset);
 	~ImageDataDirectory() = default;
 
 	/// <summary>

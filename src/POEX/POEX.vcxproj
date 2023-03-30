@@ -25,6 +25,7 @@
     <ClInclude Include="Headers\ImageBaseRelocation.h" />
     <ClInclude Include="Headers\ImageBoundImport.h" />
     <ClInclude Include="Headers\ImageCertificateDirectory.h" />
+    <ClInclude Include="Headers\ImageComDescriptor.h" />
     <ClInclude Include="Headers\ImageDataDirectory.h" />
     <ClInclude Include="Headers\ImageDebugDirectory.h" />
     <ClInclude Include="Headers\ImageDelayImportDescriptor.h" />
@@ -49,6 +50,7 @@
     <ClCompile Include="Sources\ImageBaseRelocation.cpp" />
     <ClCompile Include="Sources\ImageBoundImport.cpp" />
     <ClCompile Include="Sources\ImageCertificateDirectory.cpp" />
+    <ClCompile Include="Sources\ImageComDescriptor.cpp" />
     <ClCompile Include="Sources\ImageDataDirectory.cpp" />
     <ClCompile Include="Sources\ImageDebugDirectory.cpp" />
     <ClCompile Include="Sources\ImageDelayImportDescriptor.cpp" />

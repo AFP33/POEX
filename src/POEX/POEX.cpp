@@ -296,6 +296,28 @@ auto POEX::PE::GetImageCertificateDirectory() -> std::unique_ptr<ImageCertificat
     }
 }
 
+auto POEX::PE::GetImageComDescriptor() -> std::unique_ptr<ImageComDescriptor>
+{
+    try
+    {
+        auto ntHeader = this->GetImageNtHeader();
+        auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
+        auto& comDescriptorDataDirectory = dataDirectories[static_cast<int>(
+            DataDirectoryType::ComDescriptor)];
+        if (comDescriptorDataDirectory->Size() == 0 || comDescriptorDataDirectory->VirtualAddress() == 0)
+            return NULL;
+
+        auto offset = Utils::RvaToOffset(comDescriptorDataDirectory->VirtualAddress(),
+            this->GetImageSectionHeader());
+
+        return std::make_unique<ImageComDescriptor>(this->bFile, offset);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
+}
+
 auto POEX::PE::Is64Bit() const -> bool
 {
     return this->bFile->ReadUnsignedShort(this->bFile->ReadUnsignedInt(ELFANEW) + PE_SIGNATURE_UNTIL_MAGIC) == (unsigned short)FileType::BIT64;

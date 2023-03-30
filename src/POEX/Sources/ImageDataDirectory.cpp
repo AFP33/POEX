@@ -8,6 +8,11 @@ ImageDataDirectory::ImageDataDirectory(const std::shared_ptr<BufferFile>& bFile,
 		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
+ImageDataDirectory::ImageDataDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset) :
+	bFile(bFile), offset(offset)
+{
+}
+
 auto ImageDataDirectory::VirtualAddress() const -> unsigned int
 {
 	return this->bFile->ReadUnsignedInt(this->offset + 0x0000);
