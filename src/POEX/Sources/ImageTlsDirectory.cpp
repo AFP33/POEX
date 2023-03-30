@@ -1,10 +1,18 @@
 #include "../Headers/ImageTlsDirectory.h"
 #include "../Headers/Utils.h"
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
+
 ImageTlsDirectory::ImageTlsDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset, 
 	const std::vector<ImageSectionHeader>& imageSectionHeaders, const bool& is64Bit) :
 	bFile(bFile), offset(offset), imageSectionHeaders(imageSectionHeaders), is64Bit(is64Bit)
 {
+	if (WRONG_LONG(this->offset))
+		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
 auto ImageTlsDirectory::Callbacks() -> std::vector<ImageTlsCallback>
@@ -225,6 +233,8 @@ ImageTlsCallback::ImageTlsCallback(const std::shared_ptr<BufferFile>& bFile, con
 	const bool& is64Bit) :
 	bFile(bFile), offset(offset), is64Bit(is64Bit)
 {
+	if (WRONG_LONG(this->offset))
+		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
 auto ImageTlsCallback::Callback() const -> unsigned long

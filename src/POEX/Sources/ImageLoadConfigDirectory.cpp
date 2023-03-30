@@ -1,9 +1,17 @@
 #include "../Headers/ImageLoadConfigDirectory.h"
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
+
 ImageLoadConfigDirectory::ImageLoadConfigDirectory(const std::shared_ptr<BufferFile>& bFile, 
 	const long& offset, const bool& is64Bit) :
 	bFile(bFile), offset(offset), is64Bit(is64Bit)
 {
+	if (WRONG_LONG(this->offset))
+		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
 auto ImageLoadConfigDirectory::Size() const -> unsigned int

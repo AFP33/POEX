@@ -1,12 +1,20 @@
 #include "../Headers/ImageExceptionDirectory.h"
 #include "../Headers/Utils.h"
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
+
 ImageExceptionDirectory::ImageExceptionDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset, 
 	const std::vector<ImageSectionHeader>& imageSectionHeaders, const bool& is32Bit, 
 	const unsigned int& directorySize) :
 	bFile(bFile), offset(offset), imageSectionHeaders(imageSectionHeaders), 
 	is32Bit(is32Bit), directorySize(directorySize)
 {
+	if (WRONG_LONG(this->offset))
+		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
 auto ImageExceptionDirectory::GetExceptionDirectories() -> std::vector<std::unique_ptr<ExceptionTable>>
@@ -36,6 +44,8 @@ ExceptionTable::ExceptionTable(const std::shared_ptr<BufferFile>& bFile, const l
 	const std::vector<ImageSectionHeader>& imageSectionHeaders) : 
 	bFile(bFile), offset(offset), imageSectionHeaders(imageSectionHeaders)
 {
+	if (WRONG_LONG(this->offset))
+		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
 auto ExceptionTable::BeginAddress() const -> unsigned long

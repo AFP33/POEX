@@ -1,5 +1,11 @@
 #include "../Headers/ImageOptionalHeader.h"
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
+
 ImageOptionalHeader::ImageOptionalHeader(const std::shared_ptr<BufferFile>& bFile, 
 	const long& offset, 
 	const bool& is64Bit) : bFile(bFile), offset(offset), is64Bit(is64Bit)
@@ -10,8 +16,10 @@ ImageOptionalHeader::ImageOptionalHeader(const std::shared_ptr<BufferFile>& bFil
 
 auto ImageOptionalHeader::ToString(SubsystemType subsystem) -> std::string
 {
-	switch (subsystem)
+	try
 	{
+		switch (subsystem)
+		{
 		case SubsystemType::Unknown: return "Unknown Subsystem";
 		case SubsystemType::Native:return "Native";
 		case SubsystemType::WindowsGui:return "Windows Gui";
@@ -26,13 +34,20 @@ auto ImageOptionalHeader::ToString(SubsystemType subsystem) -> std::string
 		case SubsystemType::Xbox:return "XBox";
 		case SubsystemType::WindowsBootApplication:return "Windows boot application";
 		default: return "NOT FOUND SUBSYSTEM TYPE";
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
 	}
 }
 
 auto ImageOptionalHeader::ToString(DllCharacteristicsType dllCharacteristicsType) -> std::string
 {
-	switch (dllCharacteristicsType)
+	try
 	{
+		switch (dllCharacteristicsType)
+		{
 		case DllCharacteristicsType::HighEntropyVA: return "Image can handle a high entropy 64-bit virtual address space.";
 		case DllCharacteristicsType::DynamicBase: return "DLL can be relocated at load time.";
 		case DllCharacteristicsType::ForceIntegrity: return "Code Integrity checks are enforced.";
@@ -45,363 +60,806 @@ auto ImageOptionalHeader::ToString(DllCharacteristicsType dllCharacteristicsType
 		case DllCharacteristicsType::GuardCF: return "Image supports Control Flow Guard.";
 		case DllCharacteristicsType::TerminalServerAware: return "Terminal Server aware.";
 		default: return "NOT FOUND DllCharacteristicsType";
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
 	}
 }
 
 auto ImageOptionalHeader::ToString(FileType fileType) -> std::string
 {
-	switch (fileType)
+	try
 	{
+		switch (fileType)
+		{
 		case FileType::BIT32: return "File is 32bit.";
 		case FileType::BIT64: return "File is 64bit.";
 		case FileType::ROM: return "File is ROM.";
 		default: return "NOT FOUND FILE TYPE";
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
 	}
 }
 
 auto ImageOptionalHeader::DataDirectory() -> std::vector<std::unique_ptr<ImageDataDirectory>>
 {
-	std::vector<std::unique_ptr<ImageDataDirectory>> dDirectory;
-	for (unsigned int i = 0; i < 16; i++)
+	try
 	{
-		if (this->is64Bit)
+		std::vector<std::unique_ptr<ImageDataDirectory>> dDirectory;
+		for (unsigned int i = 0; i < 16; i++)
 		{
-			dDirectory.push_back(std::unique_ptr<ImageDataDirectory> 
-				(new ImageDataDirectory(this->bFile, this->offset + 0x0070 + i * 0x0008, DataDirectoryType(i))));
+			if (this->is64Bit)
+			{
+				dDirectory.push_back(std::unique_ptr<ImageDataDirectory>
+					(new ImageDataDirectory(this->bFile, this->offset + 0x0070 + i * 0x0008, DataDirectoryType(i))));
+			}
+			else
+			{
+				dDirectory.push_back(std::unique_ptr<ImageDataDirectory>
+					(new ImageDataDirectory(this->bFile, this->offset + 0x0060 + i * 0x0008, DataDirectoryType(i))));
+			}
 		}
-		else
-		{
-			dDirectory.push_back(std::unique_ptr<ImageDataDirectory>
-				(new ImageDataDirectory(this->bFile, this->offset + 0x0060 + i * 0x0008, DataDirectoryType(i))));
-		}
-	}
 
-	return dDirectory;
+		return dDirectory;
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::Magic() const -> FileType
 {
-	return (FileType)this->bFile->ReadUnsignedShort(this->offset + 0x0000);
+	try
+	{
+		return (FileType)this->bFile->ReadUnsignedShort(this->offset + 0x0000);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::Magic(const FileType& fileType) -> void
 {
-	this->bFile->WriteUnsignedShort(this->offset + 0x0000, (unsigned short)fileType);
+	try
+	{
+		this->bFile->WriteUnsignedShort(this->offset + 0x0000, (unsigned short)fileType);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MajorLinkerVersion() const -> byte
 {
-	return this->bFile->ReadByte(this->offset + 0x0002);
+	try
+	{
+		return this->bFile->ReadByte(this->offset + 0x0002);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MajorLinkerVersion(const byte& mlVersion)
 {
-	this->bFile->WriteByte(this->offset + 0x0002, mlVersion);
+	try
+	{
+		this->bFile->WriteByte(this->offset + 0x0002, mlVersion);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MinorLinkerVersion() const -> byte
 {
-	return this->bFile->ReadByte(this->offset + 0x0003);
+	try
+	{
+		return this->bFile->ReadByte(this->offset + 0x0003);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MinorLinkerVersion(const byte& mlVersion)
 {
-	this->bFile->WriteByte(this->offset + 0x0003, mlVersion);
+	try
+	{
+		this->bFile->WriteByte(this->offset + 0x0003, mlVersion);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfCode() const -> unsigned int
 {
-	return this->bFile->ReadUnsignedInt(this->offset + 0x0004);
+	try
+	{
+		return this->bFile->ReadUnsignedInt(this->offset + 0x0004);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfCode(const unsigned int& sizeOfCode) -> void
 {
-	this->bFile->WriteUnsignedInt(this->offset + 0x0004, sizeOfCode);
+	try
+	{
+		this->bFile->WriteUnsignedInt(this->offset + 0x0004, sizeOfCode);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfInitializedData() const -> unsigned int
 {
-	return this->bFile->ReadUnsignedInt(this->offset + 0x0008);
+	try
+	{
+		return this->bFile->ReadUnsignedInt(this->offset + 0x0008);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfInitializedData(const unsigned int& sizeOfInitializedData) -> void
 {
-	this->bFile->WriteUnsignedInt(this->offset + 0x0008, sizeOfInitializedData);
+	try
+	{
+		this->bFile->WriteUnsignedInt(this->offset + 0x0008, sizeOfInitializedData);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfUninitializedData() const -> unsigned int
 {
-	return this->bFile->ReadUnsignedInt(this->offset + 0x000C);
+	try
+	{
+		return this->bFile->ReadUnsignedInt(this->offset + 0x000C);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfUninitializedData(const unsigned int& sizeOfUninitializedData) -> void
 {
-	this->bFile->WriteUnsignedInt(this->offset + 0x000C, sizeOfUninitializedData);
+	try
+	{
+		this->bFile->WriteUnsignedInt(this->offset + 0x000C, sizeOfUninitializedData);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::AddressOfEntryPoint() const -> unsigned int
 {
-	return this->bFile->ReadUnsignedInt(this->offset + 0x0010);
+	try
+	{
+		return this->bFile->ReadUnsignedInt(this->offset + 0x0010);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::AddressOfEntryPoint(const unsigned int& addressOfEntryPoint) -> void
 {
-	this->bFile->WriteUnsignedInt(this->offset + 0x0010, addressOfEntryPoint);
+	try
+	{
+		this->bFile->WriteUnsignedInt(this->offset + 0x0010, addressOfEntryPoint);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::BaseOfCode() const -> unsigned int
 {
-	return this->bFile->ReadUnsignedInt(this->offset + 0x0014);
+	try
+	{
+		return this->bFile->ReadUnsignedInt(this->offset + 0x0014);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::BaseOfCode(const unsigned int& baseOfCode) -> void
 {
-	this->bFile->WriteUnsignedInt(this->offset + 0x0014, baseOfCode);
+	try
+	{
+		this->bFile->WriteUnsignedInt(this->offset + 0x0014, baseOfCode);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::BaseOfData() const -> unsigned int
 {
-	return this->bFile->ReadUnsignedInt(this->offset + 0x0018);
+	try
+	{
+		return this->bFile->ReadUnsignedInt(this->offset + 0x0018);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::BaseOfData(const unsigned int& baseOfData) -> void
 {
-	if (!this->is64Bit) // if it's 32 bit
-		this->bFile->WriteUnsignedInt(this->offset + 0x0018, baseOfData);
-	else
-		THROW_EXCEPTION("[ERROR] OptionalHeader->BaseOfData does not exist in 64 bit applications.");
+	try
+	{
+		if (!this->is64Bit) // if it's 32 bit
+			this->bFile->WriteUnsignedInt(this->offset + 0x0018, baseOfData);
+		else
+			THROW_EXCEPTION("[ERROR] OptionalHeader->BaseOfData does not exist in 64 bit applications.");
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::ImageBase() const -> unsigned long
 {
-	return this->is64Bit ? this->bFile->ReadUnsignedLong(this->offset + 0x0018) : this->bFile->ReadUnsignedInt(this->offset + 0x001C);
+	try
+	{
+		return this->is64Bit ?
+			this->bFile->ReadUnsignedLong(this->offset + 0x0018) :
+			this->bFile->ReadUnsignedInt(this->offset + 0x001C);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::ImageBase(const unsigned long& imageBase) -> void
 {
-	this->is64Bit ? this->bFile->WriteUnsignedLong(this->offset + 0x0018, imageBase) : this->bFile->WriteUnsignedInt(this->offset + 0x001C, unsigned int(imageBase));
+	try
+	{
+		this->is64Bit ?
+			this->bFile->WriteUnsignedLong(this->offset + 0x0018, imageBase) :
+			this->bFile->WriteUnsignedInt(this->offset + 0x001C, unsigned int(imageBase));
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SectionAlignment() const -> unsigned int
 {
-	return this->bFile->ReadUnsignedInt(this->offset + 0x0020);
+	try
+	{
+		return this->bFile->ReadUnsignedInt(this->offset + 0x0020);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SectionAlignment(const unsigned int& sectionAlignment) -> void
 {
-	this->bFile->WriteUnsignedInt(this->offset + 0x0020, sectionAlignment);
+	try
+	{
+		this->bFile->WriteUnsignedInt(this->offset + 0x0020, sectionAlignment);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::FileAlignment() const -> unsigned int
 {
-	return this->bFile->ReadUnsignedInt(this->offset + 0x0024);
+	try
+	{
+		return this->bFile->ReadUnsignedInt(this->offset + 0x0024);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::FileAlignment(const unsigned int& fileAlignment) -> void
 {
-	this->bFile->WriteUnsignedInt(this->offset + 0x0024, fileAlignment);
+	try
+	{
+		this->bFile->WriteUnsignedInt(this->offset + 0x0024, fileAlignment);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MajorOperatingSystemVersion() const -> unsigned short
 {
-	return this->bFile->ReadUnsignedShort(this->offset + 0x0028);
+	try
+	{
+		return this->bFile->ReadUnsignedShort(this->offset + 0x0028);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MajorOperatingSystemVersion(const unsigned short& majorOperatingSystemVersion) -> void
 {
-	this->bFile->WriteUnsignedShort(this->offset + 0x0028, majorOperatingSystemVersion);
+	try
+	{
+		this->bFile->WriteUnsignedShort(this->offset + 0x0028, majorOperatingSystemVersion);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MinorOperatingSystemVersion() const -> unsigned short
 {
-	return this->bFile->ReadUnsignedShort(this->offset + 0x002A);
+	try
+	{
+		return this->bFile->ReadUnsignedShort(this->offset + 0x002A);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MinorOperatingSystemVersion(const unsigned short& minorOperatingSystemVersion) -> void
 {
-	this->bFile->WriteUnsignedShort(this->offset + 0x002A, minorOperatingSystemVersion);
+	try
+	{
+		this->bFile->WriteUnsignedShort(this->offset + 0x002A, minorOperatingSystemVersion);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MajorImageVersion() const -> unsigned short
 {
-	return this->bFile->ReadUnsignedShort(this->offset + 0x002C);
+	try
+	{
+		return this->bFile->ReadUnsignedShort(this->offset + 0x002C);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MajorImageVersion(const unsigned short& majorImageVersion) -> void
 {
-	this->bFile->WriteUnsignedShort(this->offset + 0x002C, majorImageVersion);
+	try
+	{
+		this->bFile->WriteUnsignedShort(this->offset + 0x002C, majorImageVersion);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MinorImageVersion() const -> unsigned short
 {
-	return this->bFile->ReadUnsignedShort(this->offset + 0x002E);
+	try
+	{
+		return this->bFile->ReadUnsignedShort(this->offset + 0x002E);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MinorImageVersion(const unsigned short& minorImageVersion) -> void
 {
-	this->bFile->WriteUnsignedShort(this->offset + 0x002E, minorImageVersion);
+	try
+	{
+		this->bFile->WriteUnsignedShort(this->offset + 0x002E, minorImageVersion);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MajorSubsystemVersion() const -> unsigned short
 {
-	return this->bFile->ReadUnsignedShort(this->offset + 0x0030);
+	try
+	{
+		return this->bFile->ReadUnsignedShort(this->offset + 0x0030);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MajorSubsystemVersion(const unsigned short& majorSubsystemVersion) -> void
 {
-	this->bFile->WriteUnsignedShort(this->offset + 0x0030, majorSubsystemVersion);
+	try
+	{
+		this->bFile->WriteUnsignedShort(this->offset + 0x0030, majorSubsystemVersion);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MinorSubsystemVersion() const -> unsigned short
 {
-	return this->bFile->ReadUnsignedShort(this->offset + 0x0032);
+	try
+	{
+		return this->bFile->ReadUnsignedShort(this->offset + 0x0032);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::MinorSubsystemVersion(const unsigned short& minorSubsystemVersion) -> void
 {
-	this->bFile->WriteUnsignedShort(this->offset + 0x0032, minorSubsystemVersion);
+	try
+	{
+		this->bFile->WriteUnsignedShort(this->offset + 0x0032, minorSubsystemVersion);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::Win32VersionValue() const -> unsigned int
 {
-	return this->bFile->ReadUnsignedInt(this->offset + 0x0034);
+	try
+	{
+		return this->bFile->ReadUnsignedInt(this->offset + 0x0034);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::Win32VersionValue(const unsigned int& win32VersionValue) -> void
 {
-	this->bFile->WriteUnsignedInt(this->offset + 0x0034, win32VersionValue);
+	try
+	{
+		this->bFile->WriteUnsignedInt(this->offset + 0x0034, win32VersionValue);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfImage() const -> unsigned int
 {
-	return this->bFile->ReadUnsignedInt(this->offset + 0x0038);
+	try
+	{
+		return this->bFile->ReadUnsignedInt(this->offset + 0x0038);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfImage(const unsigned int& sizeOfImage) -> void
 {
-	this->bFile->WriteUnsignedInt(this->offset + 0x0038, sizeOfImage);
+	try
+	{
+		this->bFile->WriteUnsignedInt(this->offset + 0x0038, sizeOfImage);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfHeaders() const -> unsigned int
 {
-	return this->bFile->ReadUnsignedInt(this->offset + 0x003C);
+	try
+	{
+		return this->bFile->ReadUnsignedInt(this->offset + 0x003C);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfHeaders(const unsigned int& sizeOfHeaders) -> void
 {
-	this->bFile->WriteUnsignedInt(this->offset + 0x003C, sizeOfHeaders);
+	try
+	{
+		this->bFile->WriteUnsignedInt(this->offset + 0x003C, sizeOfHeaders);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::CheckSum() const -> unsigned int
 {
-	return this->bFile->ReadUnsignedInt(this->offset + 0x0040);
+	try
+	{
+		return this->bFile->ReadUnsignedInt(this->offset + 0x0040);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::CheckSum(const unsigned int& checkSum) -> void
 {
-	this->bFile->WriteUnsignedInt(this->offset + 0x0040, checkSum);
+	try
+	{
+		this->bFile->WriteUnsignedInt(this->offset + 0x0040, checkSum);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::Subsystem() const -> SubsystemType
 {
-	return (SubsystemType)this->bFile->ReadUnsignedShort(this->offset + 0x0044);
+	try
+	{
+		return (SubsystemType)this->bFile->ReadUnsignedShort(this->offset + 0x0044);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::Subsystem(const SubsystemType& systemType) -> void
 {
-	this->bFile->WriteUnsignedShort(this->offset + 0x0044, (unsigned short)systemType);
+	try
+	{
+		this->bFile->WriteUnsignedShort(this->offset + 0x0044, (unsigned short)systemType);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::DllCharacteristics() const -> DllCharacteristicsType
 {
-	return (DllCharacteristicsType)this->bFile->ReadUnsignedShort(this->offset + 0x0046);
+	try
+	{
+		return (DllCharacteristicsType)this->bFile->ReadUnsignedShort(this->offset + 0x0046);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::DllCharacteristics(const DllCharacteristicsType& dllCharacteristicsType) -> void
 {
-	this->bFile->WriteUnsignedShort(this->offset + 0x0046, (unsigned short)dllCharacteristicsType);
+	try
+	{
+		this->bFile->WriteUnsignedShort(this->offset + 0x0046, (unsigned short)dllCharacteristicsType);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfStackReserve() const -> unsigned long
 {
-	return this->is64Bit 
-		? this->bFile->ReadUnsignedLong(this->offset + 0x0048) 
-		: this->bFile->ReadUnsignedInt(this->offset + 0x0048);
+	try
+	{
+		return this->is64Bit
+			? this->bFile->ReadUnsignedLong(this->offset + 0x0048)
+			: this->bFile->ReadUnsignedInt(this->offset + 0x0048);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfStackReserve(const unsigned long& sizeOfStackReserve) -> void
 {
-	this->is64Bit 
-		? this->bFile->WriteUnsignedLong(this->offset + 0x0048, sizeOfStackReserve) 
-		: this->bFile->WriteUnsignedInt(this->offset + 0x0048, (unsigned int)sizeOfStackReserve);
+	try
+	{
+		this->is64Bit
+			? this->bFile->WriteUnsignedLong(this->offset + 0x0048, sizeOfStackReserve)
+			: this->bFile->WriteUnsignedInt(this->offset + 0x0048, (unsigned int)sizeOfStackReserve);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfStackCommit() const -> unsigned long
 {
-	return this->is64Bit 
-		? this->bFile->ReadUnsignedLong(this->offset + 0x0050) 
-		: this->bFile->ReadUnsignedInt(this->offset + 0x004C);
+	try
+	{
+		return this->is64Bit
+			? this->bFile->ReadUnsignedLong(this->offset + 0x0050)
+			: this->bFile->ReadUnsignedInt(this->offset + 0x004C);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfStackCommit(const unsigned long& sizeOfStackCommit) -> void
 {
-	this->is64Bit 
-		? this->bFile->WriteUnsignedLong(this->offset + 0x0050, sizeOfStackCommit) 
-		: this->bFile->WriteUnsignedInt(this->offset + 0x004C, (unsigned int)sizeOfStackCommit);
+	try
+	{
+		this->is64Bit
+			? this->bFile->WriteUnsignedLong(this->offset + 0x0050, sizeOfStackCommit)
+			: this->bFile->WriteUnsignedInt(this->offset + 0x004C, (unsigned int)sizeOfStackCommit);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfHeapReserve() const -> unsigned long
 {
-	return this->is64Bit
-		? this->bFile->ReadUnsignedLong(this->offset + 0x0058)
-		: this->bFile->ReadUnsignedInt(this->offset + 0x0050);
+	try
+	{
+		return this->is64Bit
+			? this->bFile->ReadUnsignedLong(this->offset + 0x0058)
+			: this->bFile->ReadUnsignedInt(this->offset + 0x0050);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfHeapReserve(const unsigned long& sizeOfHeapReserve) -> void
 {
-	this->is64Bit
-		? this->bFile->WriteUnsignedLong(this->offset + 0x0058, sizeOfHeapReserve)
-		: this->bFile->WriteUnsignedInt(this->offset + 0x0050, (unsigned int)sizeOfHeapReserve);
+	try
+	{
+		this->is64Bit
+			? this->bFile->WriteUnsignedLong(this->offset + 0x0058, sizeOfHeapReserve)
+			: this->bFile->WriteUnsignedInt(this->offset + 0x0050, (unsigned int)sizeOfHeapReserve);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfHeapCommit() const -> unsigned long
 {
-	return this->is64Bit
-		? this->bFile->ReadUnsignedLong(this->offset + 0x0060)
-		: this->bFile->ReadUnsignedInt(this->offset + 0x0054);
+	try
+	{
+		return this->is64Bit
+			? this->bFile->ReadUnsignedLong(this->offset + 0x0060)
+			: this->bFile->ReadUnsignedInt(this->offset + 0x0054);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::SizeOfHeapCommit(const unsigned long& sizeOfHeapCommit) -> void
 {
-	this->is64Bit
-		? this->bFile->WriteUnsignedLong(this->offset + 0x0060, sizeOfHeapCommit)
-		: this->bFile->WriteUnsignedInt(this->offset + 0x0054, (unsigned int)sizeOfHeapCommit);
+	try
+	{
+		this->is64Bit
+			? this->bFile->WriteUnsignedLong(this->offset + 0x0060, sizeOfHeapCommit)
+			: this->bFile->WriteUnsignedInt(this->offset + 0x0054, (unsigned int)sizeOfHeapCommit);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::LoaderFlags() const -> unsigned int
 {
-	return this->is64Bit
-		? this->bFile->ReadUnsignedInt(this->offset + 0x0068)
-		: this->bFile->ReadUnsignedInt(this->offset + 0x0058);
+	try
+	{
+		return this->is64Bit
+			? this->bFile->ReadUnsignedInt(this->offset + 0x0068)
+			: this->bFile->ReadUnsignedInt(this->offset + 0x0058);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::LoaderFlags(const unsigned int& loaderFlags) -> void
 {
-	this->is64Bit
-		? this->bFile->WriteUnsignedInt(this->offset + 0x0068, loaderFlags)
-		: this->bFile->WriteUnsignedInt(this->offset + 0x0058, (unsigned int)loaderFlags);
+	try
+	{
+		this->is64Bit
+			? this->bFile->WriteUnsignedInt(this->offset + 0x0068, loaderFlags)
+			: this->bFile->WriteUnsignedInt(this->offset + 0x0058, (unsigned int)loaderFlags);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::NumberOfRvaAndSizes() const -> unsigned int
 {
-	return this->is64Bit
-		? this->bFile->ReadUnsignedInt(this->offset + 0x006C)
-		: this->bFile->ReadUnsignedInt(this->offset + 0x005C);
+	try
+	{
+		return this->is64Bit
+			? this->bFile->ReadUnsignedInt(this->offset + 0x006C)
+			: this->bFile->ReadUnsignedInt(this->offset + 0x005C);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageOptionalHeader::NumberOfRvaAndSizes(const unsigned int& numberOfRvaAndSizes) -> void
 {
-	this->is64Bit
-		? this->bFile->WriteUnsignedInt(this->offset + 0x006C, numberOfRvaAndSizes)
-		: this->bFile->WriteUnsignedInt(this->offset + 0x005C, numberOfRvaAndSizes);
+	try
+	{
+		this->is64Bit
+			? this->bFile->WriteUnsignedInt(this->offset + 0x006C, numberOfRvaAndSizes)
+			: this->bFile->WriteUnsignedInt(this->offset + 0x005C, numberOfRvaAndSizes);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }

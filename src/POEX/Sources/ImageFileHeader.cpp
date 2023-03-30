@@ -1,5 +1,11 @@
 #include "../Headers/ImageFileHeader.h"
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
+
 ImageFileHeader::ImageFileHeader(const std::shared_ptr<BufferFile>& bFile, 
     const long& offset) : bFile(bFile), offset(offset)
 {
@@ -9,8 +15,10 @@ ImageFileHeader::ImageFileHeader(const std::shared_ptr<BufferFile>& bFile,
 
 auto ImageFileHeader::ToString(MachineType machine) -> std::string
 {
-    switch (machine)
+    try
     {
+        switch (machine)
+        {
         case MachineType::I386: return "Intel 386";
         case MachineType::I860: return "Intel i860";
         case MachineType::R3000: return "MIPS R3000";
@@ -55,14 +63,21 @@ auto ImageFileHeader::ToString(MachineType machine) -> std::string
         case MachineType::SunDotnet64: return "Sun .NET x64";
         case MachineType::SunDotnet32: return "Sun .NET x86";
         default:
-        return "NOT FOUND MACHINE TYPE";
+            return "NOT FOUND MACHINE TYPE";
+        }
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
     }
 }
 
 auto ImageFileHeader::ToString(FileCharacteristicsType fileCharacteristicsType) -> std::string
 {
-    switch (fileCharacteristicsType)
+    try
     {
+        switch (fileCharacteristicsType)
+        {
         case FileCharacteristicsType::RelocsStripped: return "RelocsStripped";
         case FileCharacteristicsType::ExecutableImage: return "ExecutableImage";
         case FileCharacteristicsType::LineNumsStripped: return "LineNumsStripped";
@@ -79,75 +94,178 @@ auto ImageFileHeader::ToString(FileCharacteristicsType fileCharacteristicsType) 
         case FileCharacteristicsType::UpSystemOnly: return "UpSystemOnly";
         case FileCharacteristicsType::BytesReversedHi: return "BytesReversedHi";
         default: return "NOT FOUND File Characteristics Type";
+        }
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
     }
 }
 
 auto ImageFileHeader::Machine() const -> MachineType
 {
-	return static_cast<MachineType>(this->bFile->ReadUnsignedShort(this->offset + 0x0000));
+    try
+    {
+        return static_cast<MachineType>(this->bFile->ReadUnsignedShort(this->offset + 0x0000));
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto ImageFileHeader::Machine(MachineType machine) -> void
 {
-	this->bFile->WriteUnsignedShort(this->offset + 0x0000, (unsigned short)machine);
+    try
+    {
+        this->bFile->WriteUnsignedShort(this->offset + 0x0000, (unsigned short)machine);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto ImageFileHeader::NumberOfSection() const -> unsigned short
 {
-    return this->bFile->ReadUnsignedShort(this->offset + 0x0002);
+    try
+    {
+        return this->bFile->ReadUnsignedShort(this->offset + 0x0002);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto ImageFileHeader::NumberOfSection(const unsigned short& numberOfSection) -> void
 {
-    this->bFile->WriteUnsignedShort(this->offset + 0x0002, numberOfSection);
+    try
+    {
+        this->bFile->WriteUnsignedShort(this->offset + 0x0002, numberOfSection);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto ImageFileHeader::TimeDateStamp() const -> unsigned int
 {
-    return this->bFile->ReadUnsignedInt(this->offset + 0x0004);
+    try
+    {
+        return this->bFile->ReadUnsignedInt(this->offset + 0x0004);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto ImageFileHeader::TimeDateStamp(const unsigned int& timeDateStamp) -> void
 {
-    this->bFile->WriteUnsignedInt(this->offset + 0x0004, timeDateStamp);
+    try
+    {
+        this->bFile->WriteUnsignedInt(this->offset + 0x0004, timeDateStamp);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto ImageFileHeader::PointerToSymbolTable() const -> unsigned int
 {
-    return this->bFile->ReadUnsignedShort(this->offset + 0x0008);
+    try
+    {
+        return this->bFile->ReadUnsignedShort(this->offset + 0x0008);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto ImageFileHeader::PointerToSymbolTable(const unsigned int& pointerToSymbolTable) -> void
 {
-    this->bFile->WriteUnsignedInt(this->offset + 0x0008, pointerToSymbolTable);
+    try
+    {
+        this->bFile->WriteUnsignedInt(this->offset + 0x0008, pointerToSymbolTable);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto ImageFileHeader::NumberOfSymbols() const -> unsigned int
 {
-    return this->bFile->ReadUnsignedInt(this->offset + 0x000C);
+    try
+    {
+        return this->bFile->ReadUnsignedInt(this->offset + 0x000C);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto ImageFileHeader::NumberOfSymbols(const unsigned int& numberOfSymbols) -> void
 {
-    this->bFile->WriteUnsignedInt(this->offset + 0x000C, numberOfSymbols);
+    try
+    {
+        this->bFile->WriteUnsignedInt(this->offset + 0x000C, numberOfSymbols);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto ImageFileHeader::SizeOfOptionalHeader() const -> unsigned short
 {
-    return this->bFile->ReadUnsignedShort(this->offset + 0x0010);
+    try
+    {
+        return this->bFile->ReadUnsignedShort(this->offset + 0x0010);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto ImageFileHeader::SizeOfOptionalHeader(const unsigned short& sizeOfOptionalHeader) -> void
 {
-    this->bFile->WriteUnsignedShort(this->offset + 0x0010, sizeOfOptionalHeader);
+    try
+    {
+        this->bFile->WriteUnsignedShort(this->offset + 0x0010, sizeOfOptionalHeader);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto ImageFileHeader::Characteristics() const -> FileCharacteristicsType
 {
-    return static_cast<FileCharacteristicsType>(this->bFile->ReadUnsignedShort(this->offset + 0x0012));
+    try
+    {
+        return static_cast<FileCharacteristicsType>(this->bFile->ReadUnsignedShort(this->offset + 0x0012));
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto ImageFileHeader::Characteristics(FileCharacteristicsType fileCharacteristicsType) -> void
 {
-    this->bFile->WriteUnsignedShort(this->offset + 0x0012, (unsigned short)fileCharacteristicsType);
+    try
+    {
+        this->bFile->WriteUnsignedShort(this->offset + 0x0012, (unsigned short)fileCharacteristicsType);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }

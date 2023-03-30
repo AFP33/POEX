@@ -4,6 +4,11 @@
 #include <fstream>
 #include <memory>
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
 
 FileCharacteristicsType operator&(const FileCharacteristicsType& first, const FileCharacteristicsType& second)
 {
@@ -31,80 +36,115 @@ POEX::PE::PE(CString filepath)
     }
     catch (const std::exception& ex)
     {
-        THROW_EXCEPTION(ex.what());
+        throw ex;
     }
 }
 
 auto POEX::PE::GetImageDosHeader() -> ImageDosHeader
 {
-    return ImageDosHeader(this->bFile);
+    try
+    {
+        return ImageDosHeader(this->bFile);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto POEX::PE::GetImageNtHeader() -> ImageNtHeader
 {
-    return ImageNtHeader(this->bFile, GetImageDosHeader().E_lfanew());
+    try
+    {
+        return ImageNtHeader(this->bFile, GetImageDosHeader().E_lfanew());
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto POEX::PE::GetImageSectionHeader() -> std::vector<ImageSectionHeader>
 {
-    auto fHeader = GetImageNtHeader().FileHeader();
-    auto oHeader = GetImageNtHeader().OptionalHeader();
+    try
+    {
+        auto fHeader = GetImageNtHeader().FileHeader();
+        auto oHeader = GetImageNtHeader().OptionalHeader();
 
-    auto offset = GetImageDosHeader().E_lfanew() + ((unsigned int)fHeader.SizeOfOptionalHeader() + PE_SIGNATURE_UNTIL_MAGIC);
-    auto numberOfSection = fHeader.NumberOfSection();
-    auto imageBaseAddress = oHeader.ImageBase();
+        auto offset = GetImageDosHeader().E_lfanew() + ((unsigned int)fHeader.SizeOfOptionalHeader() + PE_SIGNATURE_UNTIL_MAGIC);
+        auto numberOfSection = fHeader.NumberOfSection();
+        auto imageBaseAddress = oHeader.ImageBase();
 
-    std::vector<ImageSectionHeader> sectionHeaders;
-    for (size_t i = 0; i < numberOfSection; i++)
-        sectionHeaders.push_back(ImageSectionHeader(this->bFile, offset + static_cast<const long>(i) * SECTION_HEADER_SIZE, imageBaseAddress));
+        std::vector<ImageSectionHeader> sectionHeaders;
+        for (size_t i = 0; i < numberOfSection; i++)
+            sectionHeaders.push_back(ImageSectionHeader(this->bFile, offset + static_cast<const long>(i) * SECTION_HEADER_SIZE, imageBaseAddress));
 
-    return sectionHeaders;
+        return sectionHeaders;
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto POEX::PE::GetImageExportDirectory() -> std::unique_ptr<ImageExportDirectory>
 {
-    auto ntHeader = this->GetImageNtHeader();
-    auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
-    auto& exportDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::Export)];
-    if (exportDataDirectory->Size() == 0 || exportDataDirectory->VirtualAddress() == 0)
-        return nullptr;
-    auto offset = Utils::RvaToOffset(exportDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
-    return std::unique_ptr<ImageExportDirectory>(
-        new ImageExportDirectory(this->bFile, offset, this->GetImageSectionHeader(), std::move(exportDataDirectory)));
+    try
+    {
+        auto ntHeader = this->GetImageNtHeader();
+        auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
+        auto& exportDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::Export)];
+        if (exportDataDirectory->Size() == 0 || exportDataDirectory->VirtualAddress() == 0)
+            return nullptr;
+        auto offset = Utils::RvaToOffset(exportDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
+        return std::unique_ptr<ImageExportDirectory>(
+            new ImageExportDirectory(this->bFile, offset, this->GetImageSectionHeader(), std::move(exportDataDirectory)));
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto POEX::PE::GetImageImportDirectory() -> std::vector<std::unique_ptr<ImageImportDirectory>>
 {
-    std::vector<std::unique_ptr<ImageImportDirectory>> importTables;
-    auto ntHeader = this->GetImageNtHeader();
-    auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
-    auto& importDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::Import)];
-    auto& iatDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::IAT)];
-    if (importDataDirectory->Size() == 0 || importDataDirectory->VirtualAddress() == 0)
-        return importTables;
-    auto offset = Utils::RvaToOffset(importDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
-    if (offset == 0)
-        return importTables;
-
-    unsigned int iterator = 0;
-
-    while (true)
+    try
     {
-        auto imageImportDirectory = std::unique_ptr<ImageImportDirectory>(new ImageImportDirectory(this->bFile, 
-            offset + IMPORT_TABLE_SIZE * iterator, this->GetImageSectionHeader(), iatDataDirectory->VirtualAddress(), this->Is64Bit()));
+        std::vector<std::unique_ptr<ImageImportDirectory>> importTables;
+        auto ntHeader = this->GetImageNtHeader();
+        auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
+        auto& importDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::Import)];
+        auto& iatDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::IAT)];
+        if (importDataDirectory->Size() == 0 || importDataDirectory->VirtualAddress() == 0)
+            return importTables;
+        auto offset = Utils::RvaToOffset(importDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
+        if (offset == 0)
+            return importTables;
 
-        // Found the last ImageImportDescriptor which is completely null (except TimeDateStamp).
-        if (imageImportDirectory->ImportLookupTable() == 0 &&
+        unsigned int iterator = 0;
+
+        while (true)
+        {
+            auto imageImportDirectory = std::unique_ptr<ImageImportDirectory>(new ImageImportDirectory(this->bFile,
+                offset + IMPORT_TABLE_SIZE * iterator, this->GetImageSectionHeader(), iatDataDirectory->VirtualAddress(), this->Is64Bit()));
+
+            // Found the last ImageImportDescriptor which is completely null (except TimeDateStamp).
+            if (imageImportDirectory->ImportLookupTable() == 0 &&
                 imageImportDirectory->ForwarderChain() == 0 &&
                 imageImportDirectory->Name() == 0 &&
                 imageImportDirectory->ImportAddressTable() == 0)
-            break;
+                break;
 
-        importTables.push_back(std::move(imageImportDirectory));
-        iterator++;
+            importTables.push_back(std::move(imageImportDirectory));
+            iterator++;
+        }
+
+        return importTables;
     }
-
-    return importTables;
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto POEX::PE::GetImageResourceDirectory() -> std::unique_ptr<ImageResourceDirectory>
@@ -320,29 +360,68 @@ auto POEX::PE::GetImageComDescriptor() -> std::unique_ptr<ImageComDescriptor>
 
 auto POEX::PE::Is64Bit() const -> bool
 {
-    return this->bFile->ReadUnsignedShort(this->bFile->ReadUnsignedInt(ELFANEW) + PE_SIGNATURE_UNTIL_MAGIC) == (unsigned short)FileType::BIT64;
+    try
+    {
+        return this->bFile->ReadUnsignedShort(this->bFile->ReadUnsignedInt(ELFANEW) + PE_SIGNATURE_UNTIL_MAGIC) 
+            == (unsigned short)FileType::BIT64;
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto POEX::PE::Is32Bit() const -> bool
 {
-    return this->bFile->ReadUnsignedShort(this->bFile->ReadUnsignedInt(ELFANEW) + PE_SIGNATURE_UNTIL_MAGIC) == (unsigned short)FileType::BIT32;
+    try
+    {
+        return this->bFile->ReadUnsignedShort(this->bFile->ReadUnsignedInt(ELFANEW) + PE_SIGNATURE_UNTIL_MAGIC)
+            == (unsigned short)FileType::BIT32;
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto POEX::PE::IsExe() -> bool
 {
-    return (unsigned short)FileCharacteristicsType::ExecutableImage & (unsigned short)(FileCharacteristicsType)GetImageNtHeader().FileHeader().Characteristics();
+    try
+    {
+        return (unsigned short)FileCharacteristicsType::ExecutableImage &
+            (unsigned short)(FileCharacteristicsType)GetImageNtHeader().FileHeader().Characteristics();
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto POEX::PE::IsDll() -> bool
 {
-    return (unsigned short)FileCharacteristicsType::Dll & (unsigned short)(FileCharacteristicsType)GetImageNtHeader().FileHeader().Characteristics();
+    try
+    {
+        return (unsigned short)FileCharacteristicsType::Dll &
+            (unsigned short)(FileCharacteristicsType)GetImageNtHeader().FileHeader().Characteristics();
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto POEX::PE::SaveFile() -> void
 {
-    if (this->filepath.IsEmpty())
-        THROW_EXCEPTION("[ERROR] File path is empty.");
-    SaveFile(this->filepath);
+    try
+    {
+        if (this->filepath.IsEmpty())
+            THROW_EXCEPTION("[ERROR] File path is empty.");
+        SaveFile(this->filepath);
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }
 
 auto POEX::PE::SaveFile(const CString& filepath) -> void
@@ -361,24 +440,31 @@ auto POEX::PE::SaveFile(const CString& filepath) -> void
 
 auto POEX::PE::loadFile(const CString& filePath) -> std::vector<byte>
 {
-    if (filePath.IsEmpty())
-        THROW_OUT_OF_RANGE("[ERROR] filepath cann't be empty.");
-    std::ifstream ifs(filePath, std::ios::binary | std::ios::ate);
-    if (!ifs)
-        THROW_RUNTIME("[ERROR] Reading file fail.");
+    try
+    {
+        if (filePath.IsEmpty())
+            THROW_OUT_OF_RANGE("[ERROR] filepath cann't be empty.");
+        std::ifstream ifs(filePath, std::ios::binary | std::ios::ate);
+        if (!ifs)
+            THROW_RUNTIME("[ERROR] Reading file fail.");
 
 
-    auto end = ifs.tellg();
-    ifs.seekg(0, std::ios::beg);
+        auto end = ifs.tellg();
+        ifs.seekg(0, std::ios::beg);
 
-    auto size = std::size_t(end - ifs.tellg());
+        auto size = std::size_t(end - ifs.tellg());
 
-    if (size == 0) // avoid undefined behavior 
-        THROW_RUNTIME("[ERROR] Somethings wrong in loading file.");
+        if (size == 0) // avoid undefined behavior 
+            THROW_RUNTIME("[ERROR] Somethings wrong in loading file.");
 
-    std::vector<byte> buffer(size);
-    if (!ifs.read((char*)buffer.data(), buffer.size()))
-        throw std::runtime_error("[ERROR] Reading file fail.");
+        std::vector<byte> buffer(size);
+        if (!ifs.read((char*)buffer.data(), buffer.size()))
+            throw std::runtime_error("[ERROR] Reading file fail.");
 
-    return buffer;
+        return buffer;
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
+    }
 }

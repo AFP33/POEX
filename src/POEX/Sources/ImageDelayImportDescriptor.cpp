@@ -9,6 +9,8 @@
 ImageDelayImportDescriptor::ImageDelayImportDescriptor(const std::shared_ptr<BufferFile>& bFile, 
 	const long& offset) : bFile(bFile), offset(offset)
 {
+	if (WRONG_LONG(this->offset))
+		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
 auto ImageDelayImportDescriptor::Attributes() const -> unsigned int

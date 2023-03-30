@@ -1,169 +1,345 @@
 #include "../Headers/ImageExportDirectory.h"
 #include "../Headers/Utils.h"
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
+
 ImageExportDirectory::ImageExportDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset, 
 	const std::vector<ImageSectionHeader>& imageSectionHeaders, std::unique_ptr<ImageDataDirectory> imageDataDirectory) :
 	bFile(bFile), offset(offset), imageSectionHeaders(imageSectionHeaders), imageDataDirectory(std::move(imageDataDirectory))
 {
+	if (WRONG_LONG(this->offset))
+		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
 auto ImageExportDirectory::Characteristics() const -> unsigned int
 {
-	return bFile->ReadUnsignedInt(this->offset + 0x0000);
+	try
+	{
+		return bFile->ReadUnsignedInt(this->offset + 0x0000);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::Characteristics(const unsigned int& characteristics) -> void
 {
-	bFile->WriteUnsignedInt(offset + 0x0000, characteristics);
+	try
+	{
+		bFile->WriteUnsignedInt(offset + 0x0000, characteristics);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::TimeDateStamp() const -> unsigned int
 {
-	return bFile->ReadUnsignedInt(this->offset + 0x0004);
+	try
+	{
+		return bFile->ReadUnsignedInt(this->offset + 0x0004);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::TimeDateStamp(const unsigned int& timeDateStamp) -> void
 {
-	bFile->WriteUnsignedInt(offset + 0x0004, timeDateStamp);
+	try
+	{
+		bFile->WriteUnsignedInt(offset + 0x0004, timeDateStamp);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::MajorVersion() const -> unsigned short
 {
-	return bFile->ReadUnsignedShort(this->offset + 0x0008);
+	try
+	{
+		return bFile->ReadUnsignedShort(this->offset + 0x0008);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::MajorVersion(const unsigned short& majorVersion) -> void
 {
-	bFile->WriteUnsignedShort(offset + 0x0008, majorVersion);
+	try
+	{
+		bFile->WriteUnsignedShort(offset + 0x0008, majorVersion);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::MinorVersion() const -> unsigned short
 {
-	return bFile->ReadUnsignedShort(this->offset + 0x000A);
+	try
+	{
+		return bFile->ReadUnsignedShort(this->offset + 0x000A);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::MinorVersion(const unsigned short& minorVersion) -> void
 {
-	bFile->WriteUnsignedShort(offset + 0x000A, minorVersion);
+	try
+	{
+		bFile->WriteUnsignedShort(offset + 0x000A, minorVersion);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::Name() const -> unsigned int
 {
-	return bFile->ReadUnsignedInt(this->offset + 0x000C);
+	try
+	{
+		return bFile->ReadUnsignedInt(this->offset + 0x000C);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::Name(const unsigned int& name) -> void
 {
-	bFile->WriteUnsignedInt(offset + 0x000C, name);
+	try
+	{
+		bFile->WriteUnsignedInt(offset + 0x000C, name);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::Base() const -> unsigned int
 {
-	return bFile->ReadUnsignedInt(this->offset + 0x0010);
+	try
+	{
+		return bFile->ReadUnsignedInt(this->offset + 0x0010);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::Base(const unsigned int& base) -> void
 {
-	bFile->WriteUnsignedInt(offset + 0x0010, base);
+	try
+	{
+		bFile->WriteUnsignedInt(offset + 0x0010, base);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::NumberOfFunctions() const -> unsigned int
 {
-	return bFile->ReadUnsignedInt(this->offset + 0x0014);
+	try
+	{
+		return bFile->ReadUnsignedInt(this->offset + 0x0014);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::NumberOfFunctions(const unsigned int& numberOfFunctions) -> void
 {
-	bFile->WriteUnsignedInt(offset + 0x0014, numberOfFunctions);
+	try
+	{
+		bFile->WriteUnsignedInt(offset + 0x0014, numberOfFunctions);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::NumberOfNames() const -> unsigned int
 {
-	return bFile->ReadUnsignedInt(this->offset + 0x0018);
+	try
+	{
+		return bFile->ReadUnsignedInt(this->offset + 0x0018);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::NumberOfNames(const unsigned int& numberOfNames) -> void
 {
-	bFile->WriteUnsignedInt(offset + 0x0018, numberOfNames);
+	try
+	{
+		bFile->WriteUnsignedInt(offset + 0x0018, numberOfNames);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::AddressOfFunctions() const -> unsigned int
 {
-	return bFile->ReadUnsignedInt(this->offset + 0x001C);
+	try
+	{
+		return bFile->ReadUnsignedInt(this->offset + 0x001C);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::AddressOfFunctions(const unsigned int& addressOfFunctions) -> void
 {
-	bFile->WriteUnsignedInt(offset + 0x001C, addressOfFunctions);
+	try
+	{
+		bFile->WriteUnsignedInt(offset + 0x001C, addressOfFunctions);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::AddressOfNames() const -> unsigned int
 {
-	return bFile->ReadUnsignedInt(this->offset + 0x0020);
+	try
+	{
+		return bFile->ReadUnsignedInt(this->offset + 0x0020);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::AddressOfNames(const unsigned int& addressOfNames) -> void
 {
-	bFile->WriteUnsignedInt(offset + 0x0020, addressOfNames);
+	try
+	{
+		bFile->WriteUnsignedInt(offset + 0x0020, addressOfNames);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::AddressOfNameOrdinals() const -> unsigned int
 {
-	return bFile->ReadUnsignedInt(this->offset + 0x0024);
+	try
+	{
+		return bFile->ReadUnsignedInt(this->offset + 0x0024);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::AddressOfNameOrdinals(const unsigned int& addressOfNameOrdinals) -> void
 {
-	bFile->WriteUnsignedInt(offset + 0x0024, addressOfNameOrdinals);
+	try
+	{
+		bFile->WriteUnsignedInt(offset + 0x0024, addressOfNameOrdinals);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageExportDirectory::GetExportFunctions() -> std::vector<ExportFunction>
 {
-	if (imageDataDirectory == nullptr || this->AddressOfFunctions() == 0)
-		return std::vector<ExportFunction>();
-
-	auto expFuncs = std::vector<ExportFunction>();
-	auto funcOffsetPointer = Utils::RvaToOffset(this->AddressOfFunctions(), imageSectionHeaders);
-	auto ordOffset = this->NumberOfNames() == 0 ? 0 : Utils::RvaToOffset(this->AddressOfNameOrdinals(), imageSectionHeaders);
-	auto nameOffsetPointer = this->NumberOfNames() == 0 ? 0 : Utils::RvaToOffset(this->AddressOfNames(), imageSectionHeaders);
-
-	for (unsigned int i = 0; i < this->NumberOfFunctions(); i++)
+	try
 	{
-		auto ordinal = this->Base() + i;
-		auto address = this->bFile->ReadUnsignedInt(funcOffsetPointer + sizeof(unsigned int) * i);
+		if (imageDataDirectory == nullptr || this->AddressOfFunctions() == 0)
+			return std::vector<ExportFunction>();
 
-		auto ef = ExportFunction(std::string(), address, static_cast<unsigned short>(ordinal));
-		expFuncs.push_back(ef);
+		auto expFuncs = std::vector<ExportFunction>();
+		auto funcOffsetPointer = Utils::RvaToOffset(this->AddressOfFunctions(), imageSectionHeaders);
+		auto ordOffset = this->NumberOfNames() == 0 ? 0 : Utils::RvaToOffset(this->AddressOfNameOrdinals(), imageSectionHeaders);
+		auto nameOffsetPointer = this->NumberOfNames() == 0 ? 0 : Utils::RvaToOffset(this->AddressOfNames(), imageSectionHeaders);
+
+		for (unsigned int i = 0; i < this->NumberOfFunctions(); i++)
+		{
+			auto ordinal = this->Base() + i;
+			auto address = this->bFile->ReadUnsignedInt(funcOffsetPointer + sizeof(unsigned int) * i);
+
+			auto ef = ExportFunction(std::string(), address, static_cast<unsigned short>(ordinal));
+			expFuncs.push_back(ef);
+		}
+
+		for (unsigned int i = 0; i < this->NumberOfNames(); i++)
+		{
+			auto namePtr = this->bFile->ReadUnsignedInt(nameOffsetPointer + sizeof(unsigned int) * i);
+			auto nameAdr = Utils::RvaToOffset(namePtr, imageSectionHeaders);
+			auto name = this->bFile->ReadAsciiString(nameAdr);
+			auto ordinalIndex = (unsigned int)this->bFile->ReadUnsignedShort(ordOffset + sizeof(unsigned short) * i);
+
+			auto expFunc = expFuncs.at(ordinalIndex);
+			if (IsForwardedExport(expFunc.Address))
+			{
+				auto forwardNameAdr = Utils::RvaToOffset(expFunc.Address, imageSectionHeaders);
+				auto forwardName = this->bFile->ReadAsciiString(forwardNameAdr);
+
+
+				auto ef = ExportFunction(name, expFunc.Address, expFunc.Ordinal, forwardName);
+				expFuncs.at(ordinalIndex) = ef;
+			}
+			else
+			{
+				auto ef = ExportFunction(name, expFunc.Address, expFunc.Ordinal);
+				expFuncs.at(ordinalIndex) = ef;
+			}
+		}
+		return expFuncs;
 	}
-
-	for (unsigned int i = 0; i < this->NumberOfNames(); i++)
+	catch (const std::exception& ex)
 	{
-		auto namePtr = this->bFile->ReadUnsignedInt(nameOffsetPointer + sizeof(unsigned int) * i);
-		auto nameAdr = Utils::RvaToOffset(namePtr, imageSectionHeaders);
-		auto name = this->bFile->ReadAsciiString(nameAdr);
-		auto ordinalIndex = (unsigned int)this->bFile->ReadUnsignedShort(ordOffset + sizeof(unsigned short) * i);
-
-		auto expFunc = expFuncs.at(ordinalIndex);
-		if (IsForwardedExport(expFunc.Address))
-		{
-			auto forwardNameAdr = Utils::RvaToOffset(expFunc.Address, imageSectionHeaders);
-			auto forwardName = this->bFile->ReadAsciiString(forwardNameAdr);
-
-
-			auto ef = ExportFunction(name, expFunc.Address, expFunc.Ordinal, forwardName);
-			expFuncs.at(ordinalIndex) = ef;
-		}
-		else
-		{
-			auto ef = ExportFunction(name, expFunc.Address, expFunc.Ordinal);
-			expFuncs.at(ordinalIndex) = ef;
-		}
+		throw ex;
 	}
-	return expFuncs;
 }
 
 auto ImageExportDirectory::IsForwardedExport(const unsigned int& address) -> bool
 {
-	return imageDataDirectory->VirtualAddress() <= address && 
-		address < imageDataDirectory->VirtualAddress() + imageDataDirectory->Size();
+	try
+	{
+		return imageDataDirectory->VirtualAddress() <= address &&
+			address < imageDataDirectory->VirtualAddress() + imageDataDirectory->Size();
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }

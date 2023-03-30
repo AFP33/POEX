@@ -1,8 +1,16 @@
 #include "../Headers/ImageBoundImport.h"
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
+
 ImageBoundImport::ImageBoundImport(const std::shared_ptr<BufferFile>& bFile, const long& offset) 
 	: bFile(bFile), offset(offset)
 {
+	if (WRONG_LONG(this->offset))
+		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
 auto ImageBoundImport::TimeDateStamp() const -> unsigned int

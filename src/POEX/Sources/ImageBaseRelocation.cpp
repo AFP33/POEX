@@ -1,13 +1,28 @@
 #include "../Headers/ImageBaseRelocation.h"
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
+
 ImageBaseRelocation::ImageBaseRelocation(const std::shared_ptr<BufferFile>& bFile, 
 	const long& offset, const unsigned int& relocationSize) : 
 	bFile(bFile), offset(offset), relocationSize(relocationSize)
 {
-	if (SizeOfBlock() > relocationSize)
-		throw std::out_of_range("SizeOfBlock cannot be bigger than size of the Relocation Directory.");
-	if (SizeOfBlock() < 8)
-		throw std::out_of_range("SizeOfBlock cannot be smaller than 8.");
+	try
+	{
+		if (WRONG_LONG(this->offset))
+			THROW_EXCEPTION("[ERROR] offset value is wrong.");
+		if (SizeOfBlock() > relocationSize)
+			THROW_OUT_OF_RANGE("SizeOfBlock cannot be bigger than size of the Relocation Directory.");
+		if (SizeOfBlock() < 8)
+			THROW_OUT_OF_RANGE("SizeOfBlock cannot be smaller than 8.");
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageBaseRelocation::VirtualAddress() const -> unsigned int

@@ -1,5 +1,11 @@
 #pragma once
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
+
 #include "Headers.h"
 #include "Defines.h"
 

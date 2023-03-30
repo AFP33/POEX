@@ -1,9 +1,17 @@
 #include "../Headers/ImageCertificateDirectory.h"
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
+
 
 ImageCertificateDirectory::ImageCertificateDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset)
 	: bFile(bFile), offset(offset)
 {
+	if (WRONG_LONG(this->offset))
+		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
 auto ImageCertificateDirectory::DwLength() const -> unsigned int
@@ -83,7 +91,7 @@ auto ImageCertificateDirectory::BCertificate() const -> std::vector<byte>
 	try
 	{
 		if (this->offset + 0x8 > bFile->Length() || this->offset + DwLength() > bFile->Length())
-			throw std::out_of_range("BCertificate not in PE file range.");
+			THROW_OUT_OF_RANGE("BCertificate not in PE file range.");
 
 		return this->bFile->SubArray(this->offset + 0x0008, DwLength() - 8);
 	}

@@ -1,5 +1,11 @@
 #pragma once
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
+
 #include "Headers/ImageDelayImportDescriptor.h"
 #include "Headers/ImageCertificateDirectory.h"
 #include "Headers/ImageLoadConfigDirectory.h"

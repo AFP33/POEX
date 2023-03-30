@@ -1,10 +1,18 @@
 #include "../Headers/ImageResourceDirectory.h"
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
+
 ImageResourceDirectory::ImageResourceDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset, 
 	const long& resourceDirectoryOffset, const long& resourceDirectoryLength) :
 	bFile(bFile), offset(offset), resourceDirectoryOffset(resourceDirectoryOffset), 
 	resourceDirectoryLength(resourceDirectoryLength)
 {
+	if (WRONG_LONG(this->offset))
+		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
 ImageResourceDirectory::ImageResourceDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset, 
@@ -13,6 +21,8 @@ ImageResourceDirectory::ImageResourceDirectory(const std::shared_ptr<BufferFile>
 	bFile(bFile), offset(offset), parent(parent), resourceDirectoryOffset(resourceDirectoryOffset),
 	resourceDirectoryLength(resourceDirectoryLength)
 {
+	if (WRONG_LONG(this->offset))
+		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
 auto ImageResourceDirectory::ImageResourceDirectoryEntries() -> std::vector<std::shared_ptr<ImageResourceDirectoryEntry>>
@@ -285,6 +295,9 @@ ImageResourceDirectoryEntry::ImageResourceDirectoryEntry(const std::shared_ptr<B
 {
 	try
 	{
+		if (WRONG_LONG(this->offset))
+			THROW_EXCEPTION("[ERROR] offset value is wrong.");
+
 		if (IsIdEntry())
 			NameResolved = ResolveResourceId(ID());
 		else if (IsNamedEntry())
@@ -479,6 +492,8 @@ auto ImageResourceDirectoryEntry::ResolveResourceId(const unsigned int& id) -> s
 ImageResourceDirStringU::ImageResourceDirStringU(const std::shared_ptr<BufferFile>& bFile, const long& offset) :
 	bFile(bFile), offset(offset)
 {
+	if (WRONG_LONG(this->offset))
+		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
 auto ImageResourceDirStringU::Length() const -> unsigned short

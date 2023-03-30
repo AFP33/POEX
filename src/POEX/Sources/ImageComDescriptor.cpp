@@ -1,8 +1,16 @@
 #include "../Headers/ImageComDescriptor.h"
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
+
 ImageComDescriptor::ImageComDescriptor(const std::shared_ptr<BufferFile>& bFile, const long& offset) :
 	bFile(bFile), offset(offset)
 {
+	if (WRONG_LONG(this->offset))
+		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 	this->_exportAddressTableJumps = NULL;
 	this->_strongSignatureNames = NULL;
 	this->_managedNativeHeader = NULL;

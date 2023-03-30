@@ -1,5 +1,11 @@
 #include "../Headers/ImageDataDirectory.h"
 
+/**
+* Portable Executable (POEX) Project
+* Developed by AFP33, 2023
+* Url: https://github.com/AFP33/POEX
+*/
+
 ImageDataDirectory::ImageDataDirectory(const std::shared_ptr<BufferFile>& bFile,
 	const long& offset,
 	const DataDirectoryType& dataDirectoryType) : bFile(bFile), offset(offset), dataDirectoryType(dataDirectoryType)
@@ -11,24 +17,54 @@ ImageDataDirectory::ImageDataDirectory(const std::shared_ptr<BufferFile>& bFile,
 ImageDataDirectory::ImageDataDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset) :
 	bFile(bFile), offset(offset)
 {
+	if (WRONG_LONG(this->offset))
+		THROW_EXCEPTION("[ERROR] offset value is wrong.");
 }
 
 auto ImageDataDirectory::VirtualAddress() const -> unsigned int
 {
-	return this->bFile->ReadUnsignedInt(this->offset + 0x0000);
+	try
+	{
+		return this->bFile->ReadUnsignedInt(this->offset + 0x0000);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageDataDirectory::VirtualAddress(const unsigned int& virtualAddress) -> void
 {
-	this->bFile->WriteUnsignedInt(this->offset + 0x0000, virtualAddress);
+	try
+	{
+		this->bFile->WriteUnsignedInt(this->offset + 0x0000, virtualAddress);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageDataDirectory::Size() const -> unsigned int
 {
-	return this->bFile->ReadUnsignedInt(this->offset + 0x0004);
+	try
+	{
+		return this->bFile->ReadUnsignedInt(this->offset + 0x0004);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
 
 auto ImageDataDirectory::Size(const unsigned int& size) -> void
 {
-	this->bFile->WriteUnsignedInt(this->offset + 0x0004, size);
+	try
+	{
+		this->bFile->WriteUnsignedInt(this->offset + 0x0004, size);
+	}
+	catch (const std::exception& ex)
+	{
+		throw ex;
+	}
 }
