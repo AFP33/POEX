@@ -8,7 +8,7 @@
 */
 
 ImageExceptionDirectory::ImageExceptionDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset, 
-	const std::vector<ImageSectionHeader>& imageSectionHeaders, const bool& is32Bit, 
+	const std::vector<std::shared_ptr<ImageSectionHeader>>& imageSectionHeaders, const bool& is32Bit,
 	const unsigned int& directorySize) :
 	bFile(bFile), offset(offset), imageSectionHeaders(imageSectionHeaders), 
 	is32Bit(is32Bit), directorySize(directorySize)
@@ -29,7 +29,8 @@ auto ImageExceptionDirectory::GetExceptionDirectories() -> std::vector<std::uniq
 		std::vector<std::unique_ptr<ExceptionTable>> exceptionTables;
 		for (size_t i = 0; i < numberOfFunction; i++)
 		{
-			exceptionTables.push_back(std::make_unique<ExceptionTable>(this->bFile, (long)(this->offset + i * sizeOfRuntimeFunction), this->imageSectionHeaders));
+			exceptionTables.push_back(std::make_unique<ExceptionTable>(this->bFile, 
+				(long)(this->offset + i * sizeOfRuntimeFunction), this->imageSectionHeaders));
 		}
 
 		return exceptionTables;
@@ -41,7 +42,7 @@ auto ImageExceptionDirectory::GetExceptionDirectories() -> std::vector<std::uniq
 }
 
 ExceptionTable::ExceptionTable(const std::shared_ptr<BufferFile>& bFile, const long& offset,
-	const std::vector<ImageSectionHeader>& imageSectionHeaders) : 
+	const std::vector<std::shared_ptr<ImageSectionHeader>>& imageSectionHeaders) :
 	bFile(bFile), offset(offset), imageSectionHeaders(imageSectionHeaders)
 {
 	if (WRONG_LONG(this->offset))

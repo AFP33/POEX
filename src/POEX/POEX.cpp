@@ -64,7 +64,7 @@ auto POEX::PE::GetImageNtHeader() -> ImageNtHeader
     }
 }
 
-auto POEX::PE::GetImageSectionHeader() -> std::vector<ImageSectionHeader>
+auto POEX::PE::GetImageSectionHeader() -> std::vector<std::shared_ptr<ImageSectionHeader>>
 {
     try
     {
@@ -75,9 +75,9 @@ auto POEX::PE::GetImageSectionHeader() -> std::vector<ImageSectionHeader>
         auto numberOfSection = fHeader.NumberOfSection();
         auto imageBaseAddress = oHeader.ImageBase();
 
-        std::vector<ImageSectionHeader> sectionHeaders;
+        std::vector<std::shared_ptr<ImageSectionHeader>> sectionHeaders;
         for (size_t i = 0; i < numberOfSection; i++)
-            sectionHeaders.push_back(ImageSectionHeader(this->bFile, offset + static_cast<const long>(i) * SECTION_HEADER_SIZE, imageBaseAddress));
+            sectionHeaders.push_back(std::make_shared<ImageSectionHeader>(this->bFile, offset + static_cast<const long>(i) * SECTION_HEADER_SIZE, imageBaseAddress));
 
         return sectionHeaders;
     }
@@ -94,9 +94,11 @@ auto POEX::PE::GetImageExportDirectory() -> std::unique_ptr<ImageExportDirectory
         auto ntHeader = this->GetImageNtHeader();
         auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
         auto& exportDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::Export)];
-        if (exportDataDirectory->Size() == 0 || exportDataDirectory->VirtualAddress() == 0)
-            return nullptr;
+        if (!IsValidDataDirectory(exportDataDirectory))
+            return NULL;
         auto offset = Utils::RvaToOffset(exportDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
+        if (WRONG_LONG(offset))
+            return NULL;
         return std::unique_ptr<ImageExportDirectory>(
             new ImageExportDirectory(this->bFile, offset, this->GetImageSectionHeader(), std::move(exportDataDirectory)));
     }
@@ -115,10 +117,11 @@ auto POEX::PE::GetImageImportDirectory() -> std::vector<std::unique_ptr<ImageImp
         auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
         auto& importDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::Import)];
         auto& iatDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::IAT)];
-        if (importDataDirectory->Size() == 0 || importDataDirectory->VirtualAddress() == 0)
+        if (!IsValidDataDirectory(importDataDirectory) || !IsValidDataDirectory(iatDataDirectory))
             return importTables;
+
         auto offset = Utils::RvaToOffset(importDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
-        if (offset == 0)
+        if (WRONG_LONG(offset))
             return importTables;
 
         unsigned int iterator = 0;
@@ -154,7 +157,11 @@ auto POEX::PE::GetImageResourceDirectory() -> std::unique_ptr<ImageResourceDirec
         auto ntHeader = this->GetImageNtHeader();
         auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
         auto& resourceDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::Resource)];
+        if (!IsValidDataDirectory(resourceDataDirectory))
+            return NULL;
         auto offset = Utils::RvaToOffset(resourceDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
+        if (WRONG_LONG(offset))
+            return NULL;
         
         return std::make_unique<ImageResourceDirectory>(this->bFile, offset, offset, resourceDataDirectory->Size());
     }
@@ -171,7 +178,11 @@ auto POEX::PE::GetImageExceptionDirectory() -> std::unique_ptr<ImageExceptionDir
         auto ntHeader = this->GetImageNtHeader();
         auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
         auto& exceptionDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::Exception)];
+        if (!IsValidDataDirectory(exceptionDataDirectory))
+            return NULL;
         auto offset = Utils::RvaToOffset(exceptionDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
+        if (WRONG_LONG(offset))
+            return NULL;
 
         return std::unique_ptr<ImageExceptionDirectory>(
             new ImageExceptionDirectory(this->bFile, offset, this->GetImageSectionHeader(), this->Is32Bit(), 
@@ -190,7 +201,12 @@ auto POEX::PE::GetImageTlsDirectory() -> std::unique_ptr<ImageTlsDirectory>
         auto ntHeader = this->GetImageNtHeader();
         auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
         auto& tlsDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::TLS)];
+        if (!IsValidDataDirectory(tlsDataDirectory))
+            return NULL;
+
         auto offset = Utils::RvaToOffset(tlsDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
+        if (WRONG_LONG(offset))
+            return NULL;
 
         return std::unique_ptr<ImageTlsDirectory>(new ImageTlsDirectory(this->bFile, offset, 
             this->GetImageSectionHeader(), this->Is64Bit()));
@@ -208,7 +224,12 @@ auto POEX::PE::GetImageLoadConfigDirectory() -> std::unique_ptr<ImageLoadConfigD
         auto ntHeader = this->GetImageNtHeader();
         auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
         auto& configDataDirectory = dataDirectories[static_cast<int>(DataDirectoryType::LoadConfig)];
+        if (!IsValidDataDirectory(configDataDirectory))
+            return NULL;
+
         auto offset = Utils::RvaToOffset(configDataDirectory->VirtualAddress(), this->GetImageSectionHeader());
+        if (WRONG_LONG(offset))
+            return NULL;
 
         return std::unique_ptr<ImageLoadConfigDirectory>(new ImageLoadConfigDirectory(this->bFile, 
             offset,
@@ -224,13 +245,19 @@ auto POEX::PE::GetImageBaseRelocation() -> std::vector<std::unique_ptr<ImageBase
 {
     try
     {
+        std::vector<std::unique_ptr<ImageBaseRelocation>> imageBaseRelocations;
         auto ntHeader = this->GetImageNtHeader();
         auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
         auto& relocationDataDirectory = dataDirectories[static_cast<int>(
             DataDirectoryType::BaseReloc)];
+        if (!IsValidDataDirectory(relocationDataDirectory))
+            return imageBaseRelocations;
+            
         auto offset = Utils::RvaToOffset(relocationDataDirectory->VirtualAddress(), 
             this->GetImageSectionHeader());
-        std::vector<std::unique_ptr<ImageBaseRelocation>> imageBaseRelocations;
+        if (WRONG_LONG(offset))
+            return imageBaseRelocations;
+
         auto currentBlock = offset;
 
         while (true)
@@ -258,8 +285,13 @@ auto POEX::PE::GetImageDelayImportDescriptor() -> std::unique_ptr<ImageDelayImpo
         auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
         auto& delayImportDataDirectory = dataDirectories[static_cast<int>(
             DataDirectoryType::DelayImport)];
+        if (!IsValidDataDirectory(delayImportDataDirectory))
+            return NULL;
+
         auto offset = Utils::RvaToOffset(delayImportDataDirectory->VirtualAddress(),
             this->GetImageSectionHeader());
+        if (WRONG_LONG(offset))
+            return NULL;
 
         return std::make_unique<ImageDelayImportDescriptor>(this->bFile, offset);
     }
@@ -273,16 +305,21 @@ auto POEX::PE::GetImageDebugDirectory() -> std::vector<std::unique_ptr<ImageDebu
 {
     try
     {
+        std::vector<std::unique_ptr<ImageDebugDirectory>> debugDirectories;
         auto debugEntrySize = 28;
         auto ntHeader = this->GetImageNtHeader();
         auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
         auto& debugDataDirectory = dataDirectories[static_cast<int>(
             DataDirectoryType::Debug)];
+        if (!IsValidDataDirectory(debugDataDirectory))
+            return debugDirectories;
+
         auto offset = Utils::RvaToOffset(debugDataDirectory->VirtualAddress(),
             this->GetImageSectionHeader());
+        if (WRONG_LONG(offset))
+            return debugDirectories;
 
         auto numEntries = debugDataDirectory->Size() / debugEntrySize;
-        std::vector<std::unique_ptr<ImageDebugDirectory>> debugDirectories;
         for (size_t i = 0; i < numEntries; i++)
             debugDirectories.push_back(std::make_unique<ImageDebugDirectory>(this->bFile, offset));
         return debugDirectories;
@@ -301,11 +338,13 @@ auto POEX::PE::GetImageBoundImportDirectory() -> std::unique_ptr<ImageBoundImpor
         auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
         auto& boundImportDataDirectory = dataDirectories[static_cast<int>(
             DataDirectoryType::BoundImport)];
-        if (boundImportDataDirectory->Size() == 0 || boundImportDataDirectory->VirtualAddress() == 0)
+        if (!IsValidDataDirectory(boundImportDataDirectory))
             return NULL;
 
         auto offset = Utils::RvaToOffset(boundImportDataDirectory->VirtualAddress(),
             this->GetImageSectionHeader());
+        if (WRONG_LONG(offset))
+            return NULL;
 
         return std::make_unique<ImageBoundImport>(this->bFile, offset);
     }
@@ -323,7 +362,7 @@ auto POEX::PE::GetImageCertificateDirectory() -> std::unique_ptr<ImageCertificat
         auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
         auto& securityDataDirectory = dataDirectories[static_cast<int>(
             DataDirectoryType::Security)];
-        if (securityDataDirectory->Size() == 0 || securityDataDirectory->VirtualAddress() == 0)
+        if (!IsValidDataDirectory(securityDataDirectory))
             return NULL;
 
         // The security directory is the only one where the DATA_DIRECTORY VirtualAddress 
@@ -344,11 +383,13 @@ auto POEX::PE::GetImageComDescriptor() -> std::unique_ptr<ImageComDescriptor>
         auto dataDirectories = ntHeader.OptionalHeader().DataDirectory();
         auto& comDescriptorDataDirectory = dataDirectories[static_cast<int>(
             DataDirectoryType::ComDescriptor)];
-        if (comDescriptorDataDirectory->Size() == 0 || comDescriptorDataDirectory->VirtualAddress() == 0)
+        if (!IsValidDataDirectory(comDescriptorDataDirectory))
             return NULL;
 
         auto offset = Utils::RvaToOffset(comDescriptorDataDirectory->VirtualAddress(),
             this->GetImageSectionHeader());
+        if (WRONG_LONG(offset))
+            return NULL;
 
         return std::make_unique<ImageComDescriptor>(this->bFile, offset);
     }
@@ -435,6 +476,20 @@ auto POEX::PE::SaveFile(const CString& filepath) -> void
     catch (const std::exception& ex)
     {
         THROW_EXCEPTION((std::string("[Error]") + ex.what()).c_str());
+    }
+}
+
+auto POEX::PE::IsValidDataDirectory(const std::unique_ptr<ImageDataDirectory>& dataDirectory) -> bool
+{
+    try
+    {
+        if (dataDirectory->Size() == 0 || dataDirectory->VirtualAddress() == 0)
+            return false;
+        return true;
+    }
+    catch (const std::exception& ex)
+    {
+        throw ex;
     }
 }
 

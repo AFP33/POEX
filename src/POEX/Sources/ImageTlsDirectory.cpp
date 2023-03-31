@@ -8,7 +8,7 @@
 */
 
 ImageTlsDirectory::ImageTlsDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset, 
-	const std::vector<ImageSectionHeader>& imageSectionHeaders, const bool& is64Bit) :
+	const std::vector<std::shared_ptr<ImageSectionHeader>>& imageSectionHeaders, const bool& is64Bit) :
 	bFile(bFile), offset(offset), imageSectionHeaders(imageSectionHeaders), is64Bit(is64Bit)
 {
 	if (WRONG_LONG(this->offset))

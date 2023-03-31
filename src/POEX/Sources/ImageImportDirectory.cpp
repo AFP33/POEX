@@ -8,7 +8,7 @@
 */
 
 ImageImportDirectory::ImageImportDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset, 
-	const std::vector<ImageSectionHeader>& imageSectionHeaders, const unsigned int& iatVirtualSize,
+	const std::vector<std::shared_ptr<ImageSectionHeader>>& imageSectionHeaders, const unsigned int& iatVirtualSize,
 	bool is64Bit) : bFile(bFile), offset(offset), imageSectionHeaders(imageSectionHeaders), 
 	iatVirtualSize(iatVirtualSize), is64Bit(is64Bit)
 {

@@ -40,7 +40,7 @@ class ImageImportDirectory
 {
 public:
 	ImageImportDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset,
-		const std::vector<ImageSectionHeader>& imageSectionHeaders, const unsigned int& iatVirtualSize,
+		const std::vector<std::shared_ptr<ImageSectionHeader>>& imageSectionHeaders, const unsigned int& iatVirtualSize,
 		bool is64Bit);
 	~ImageImportDirectory() = default;
 
@@ -122,7 +122,7 @@ private:
 
 	// variables
 	std::shared_ptr<BufferFile> bFile;
-	std::vector<ImageSectionHeader> imageSectionHeaders;
+	std::vector<std::shared_ptr<ImageSectionHeader>> imageSectionHeaders;
 	unsigned int iatVirtualSize;
 	long offset;
 	bool is64Bit;

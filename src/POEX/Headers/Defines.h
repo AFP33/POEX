@@ -13,7 +13,7 @@
 #define THROW_OUT_OF_RANGE(_x_) throw std::out_of_range(_x_)
 #define THROW_RUNTIME(_x_) throw std::runtime_error(_x_)
 
-#define WRONG_LONG(_x_) (_x_ < 0)
+#define WRONG_LONG(_x_) (_x_ <= 0)
 #define EMPTY_VECTOR(_x_) (_x_.empty())
 
 #define SECTION_HEADER_SIZE 0x0028

@@ -64,7 +64,7 @@ public:
 	/// <param name="bFile">A PE file</param>
 	/// <param name="offset">Location of export directory in PE file</param>
 	ImageExportDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset, 
-		const std::vector<ImageSectionHeader>& imageSectionHeaders, std::unique_ptr<ImageDataDirectory> imageDataDirectory);
+		const std::vector<std::shared_ptr<ImageSectionHeader>>& imageSectionHeaders, std::unique_ptr<ImageDataDirectory> imageDataDirectory);
 	ImageExportDirectory(const ImageExportDirectory&) = default;
 	~ImageExportDirectory() = default;
 
@@ -222,7 +222,7 @@ private:
 
 	// variables
 	std::shared_ptr<BufferFile> bFile;
-	std::vector<ImageSectionHeader> imageSectionHeaders;
+	std::vector<std::shared_ptr<ImageSectionHeader>> imageSectionHeaders;
 	std::unique_ptr<ImageDataDirectory> imageDataDirectory;
 	long offset;
 

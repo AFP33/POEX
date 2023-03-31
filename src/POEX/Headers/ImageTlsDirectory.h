@@ -59,7 +59,7 @@ public:
 	/// <param name="offset">Offset to TLS structure in buffer.</param>
 	/// <param name="is64Bit">Flag if the PE file is 64 Bit.</param>
 	ImageTlsDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset,
-		const std::vector<ImageSectionHeader>& imageSectionHeaders, const bool& is64Bit);
+		const std::vector<std::shared_ptr<ImageSectionHeader>>& imageSectionHeaders, const bool& is64Bit);
 
 	auto Callbacks() -> std::vector<ImageTlsCallback>;
 
@@ -146,7 +146,7 @@ private:
 	ImageTlsDirectory(const ImageTlsDirectory&) = default;
 
 	// variables
-	std::vector<ImageSectionHeader> imageSectionHeaders;
+	std::vector<std::shared_ptr<ImageSectionHeader>> imageSectionHeaders;
 	std::shared_ptr<BufferFile> bFile;
 	long offset;
 	bool is64Bit;

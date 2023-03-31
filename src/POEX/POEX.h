@@ -59,7 +59,7 @@ namespace POEX
 		/// Get Image Section Header structures
 		/// </summary>
 		/// <returns>List of all Image Section Header</returns>
-		auto GetImageSectionHeader()->std::vector<ImageSectionHeader>;
+		auto GetImageSectionHeader()-> std::vector<std::shared_ptr<ImageSectionHeader>>;
 
 		/// <summary>
 		/// Access to Image Export Directory and Export Functions
@@ -177,6 +177,7 @@ namespace POEX
 		CString filepath;
 		std::shared_ptr<BufferFile> bFile;
 
+		auto IsValidDataDirectory(const std::unique_ptr<ImageDataDirectory>& dataDirectory) -> bool;
 		auto loadFile(const CString& filePath)->std::vector<byte>;
 	};
 }

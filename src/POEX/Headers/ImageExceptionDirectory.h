@@ -55,7 +55,7 @@ struct ExceptionTable
 	auto UnwInfo(const unsigned long& pointer) ->void;
 
     ExceptionTable(const std::shared_ptr<BufferFile>& bFile, const long& offset, 
-        const std::vector<ImageSectionHeader>& imageSectionHeaders);
+        const std::vector<std::shared_ptr<ImageSectionHeader>>& imageSectionHeaders);
     ~ExceptionTable() = default;
 
 private:
@@ -64,7 +64,7 @@ private:
 
 	// variables
 	std::shared_ptr<BufferFile> bFile;
-	std::vector<ImageSectionHeader> imageSectionHeaders;
+	std::vector<std::shared_ptr<ImageSectionHeader>> imageSectionHeaders;
 	long offset;
 
     friend class PE;
@@ -77,7 +77,7 @@ class ImageExceptionDirectory
 {
 public:
 	ImageExceptionDirectory(const std::shared_ptr<BufferFile>& bFile, const long& offset,
-		const std::vector<ImageSectionHeader>& imageSectionHeaders,
+		const std::vector<std::shared_ptr<ImageSectionHeader>>& imageSectionHeaders,
 		const bool& is32Bit, const unsigned int& directorySize);
 	~ImageExceptionDirectory() = default;
 
@@ -93,7 +93,7 @@ private:
 
 	// variables
 	std::shared_ptr<BufferFile> bFile;
-	std::vector<ImageSectionHeader> imageSectionHeaders;
+	std::vector<std::shared_ptr<ImageSectionHeader>> imageSectionHeaders;
 	long offset;
 	bool is32Bit;
 	unsigned int directorySize;
