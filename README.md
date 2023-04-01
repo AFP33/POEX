@@ -50,6 +50,8 @@
 
 - ### Examples
 
+Please use [WIKI](https://github.com/AFP33/POEX/wiki) for more info.
+
 *Open PE File:*
 ```C++
 #include <iostream>
